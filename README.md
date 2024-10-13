@@ -22,22 +22,44 @@
 
 ## Branch Hierarchy
 Your project will follow a three-branch hierarchy:
-1. **Main**: This branch contains the stable version of your application. Only thoroughly tested code should be merged here.
-2. **Staging**: This branch is for testing features that are ready for the QA team to review. Code is merged from the development branch to staging for quality assurance before it is promoted to main.
+1. **Main**: This branch contains the stable version of our application. Only thoroughly tested code should be merged here.
+2. **Staging**: This branch is for testing features that are ready for the QA  to review. Code is merged from the development branch to staging for quality assurance before it is promoted to main.
 3. **Development**: This branch is where all new features and bug fixes are implemented. Developers should work here and create pull requests to merge their changes into the staging branch.
 
-## Merging Strategy
-1. **Feature Development**:
-   - Developers create a new branch from the `development` branch for each feature or bug fix.
-   - After implementing and testing the feature, the developer creates a pull request (PR) to merge their feature branch into the `development` branch.
+## How to Navigate, Merge Branches, and Pull Request
 
-2. **Staging**:
-   - Once a set of features is completed and merged into the `development` branch, create a PR to merge `development` into `staging`.
-   - After QA tests the features in the staging branch, if everything is approved, create a PR to merge `staging` into `main`.
+### Navigating Between Branches
+To switch between branches in Git, use the following command:
 
-3. **Deployment**:
-   - The `main` branch represents the live production version of the application and should only contain stable code.
+```bash
+# Switch to the development branch
+git checkout development
+```
+```bash
+# Switch to the staging branch
+git checkout staging
+```
+```bash
+# Switch to the main branch
+git checkout main
+```
 
+### Merge Between Branches
+To work in the development branch:
+```bash
+git checkout development
+```
+To merge from development to staging:
+```bash
+git checkout staging
+git merge development
+```
+
+To merge from staging to main:
+```bash
+git checkout main
+git merge staging
+```
 ---
 
 # How To Deploy
