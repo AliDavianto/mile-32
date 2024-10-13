@@ -94,10 +94,10 @@ Format:
 2. Navigate to the folder you want to put the project
 3. Follow the command below on your CMD
 ```bash
-git clone https://github.com/refactorian/laravel-docker.git
+git clone https://github.com/AliDavianto/mile-32.git
 ```
 ```bash
-cd laravel-docker
+cd mile-32
 ```
 ```bash
 docker compose up -d --build
