@@ -45,18 +45,34 @@ Your project will follow a three-branch hierarchy:
 ### For first time only !
 ```bash
 git clone https://github.com/refactorian/laravel-docker.git
+```
+```bash
 cd laravel-docker
+```
+```bash
 docker compose up -d --build
+```
+```bash
 docker compose exec phpmyadmin chmod 777 /sessions
+```
+```bash
 docker compose exec php bash
+```
+```bash
 chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+```
+```bash
 chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+```
+```bash
 composer setup
+```
+
 
 ### From the second time onwards
 ```bash
 docker compose up -d
-
+```        
 # Notes
 
 ### Laravel Versions
