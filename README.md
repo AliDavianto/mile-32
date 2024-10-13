@@ -20,20 +20,42 @@
 - Stable version of [Docker](https://docs.docker.com/engine/install/)
 - Compatible version of [Docker Compose](https://docs.docker.com/compose/install/#install-compose)
 
+## Branch Hierarchy
+Your project will follow a three-branch hierarchy:
+1. **Main**: This branch contains the stable version of your application. Only thoroughly tested code should be merged here.
+2. **Staging**: This branch is for testing features that are ready for the QA team to review. Code is merged from the development branch to staging for quality assurance before it is promoted to main.
+3. **Development**: This branch is where all new features and bug fixes are implemented. Developers should work here and create pull requests to merge their changes into the staging branch.
+
+## Merging Strategy
+1. **Feature Development**:
+   - Developers create a new branch from the `development` branch for each feature or bug fix.
+   - After implementing and testing the feature, the developer creates a pull request (PR) to merge their feature branch into the `development` branch.
+
+2. **Staging**:
+   - Once a set of features is completed and merged into the `development` branch, create a PR to merge `development` into `staging`.
+   - After QA tests the features in the staging branch, if everything is approved, create a PR to merge `staging` into `main`.
+
+3. **Deployment**:
+   - The `main` branch represents the live production version of the application and should only contain stable code.
+
+---
+
 # How To Deploy
 
 ### For first time only !
-- `git clone https://github.com/refactorian/laravel-docker.git`
-- `cd laravel-docker`
-- `docker compose up -d --build`
-- `docker compose exec phpmyadmin chmod 777 /sessions`
-- `docker compose exec php bash`
-- `chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache`
-- `chmod -R 775 /var/www/storage /var/www/bootstrap/cache`
-- `composer setup`
+```bash
+git clone https://github.com/refactorian/laravel-docker.git
+cd laravel-docker
+docker compose up -d --build
+docker compose exec phpmyadmin chmod 777 /sessions
+docker compose exec php bash
+chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+composer setup
 
 ### From the second time onwards
-- `docker compose up -d`
+```bash
+docker compose up -d
 
 # Notes
 
@@ -42,7 +64,7 @@
 - [Laravel 10.x](https://github.com/refactorian/laravel-docker/tree/laravel_10x)
 
 ### Laravel App
-- URL: http://localhost
+- URL: http://localhost:8000
 
 ### Mailpit
 - URL: http://localhost:8025
