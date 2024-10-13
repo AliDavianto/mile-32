@@ -70,7 +70,7 @@ Format:
 
 <footer>
 ```
-1.Type: Indicates the nature of the change. Common types include:
+1. **Type**: Indicates the nature of the change. Common types include:
 - `feat: A new feature`
 - `fix: A bug fix`
 - `docs: Documentation only changes`
@@ -80,9 +80,9 @@ Format:
 - `test: Adding missing or correcting existing tests`
 - `chore: Changes to the build process or auxiliary tools and libraries such as documentation generation`
 - `Scope: (Optional) The part of the codebase affected (e.g., api, ui, database).`
-2.Subject: A brief description of the change, written in the imperative mood (e.g., "add", "update", "remove"). Keep it concise (ideally 50 characters or less).
-3.Body: (Optional) A more detailed description of the change, explaining what and why, wrapped at 72 characters. This is where you can elaborate on the reason for the change and its impact.
-4.Footer: (Optional) Include any references to issues or tasks, such as Fixes #123 or Related to #456.
+2. **Subject**: A brief description of the change, written in the imperative mood (e.g., "add", "update", "remove"). Keep it concise (ideally 50 characters or less).
+3. **Body**: (Optional) A more detailed description of the change, explaining what and why, wrapped at 72 characters. This is where you can elaborate on the reason for the change and its impact.
+4. **Footer**: (Optional) Include any references to issues or tasks, such as Fixes #123 or Related to #456.
 
 ---
 
