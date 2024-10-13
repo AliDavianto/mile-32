@@ -92,7 +92,7 @@ Format:
 **Make sure git is already installed on your device**
 1. Open CMD
 2. Navigate to the folder you want to put the project
-3. Follow the command below
+3. Follow the command below on your CMD
 ```bash
 git clone https://github.com/refactorian/laravel-docker.git
 ```
@@ -117,7 +117,10 @@ chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 ```bash
 composer setup
 ```
-
+4. Open your browser and open
+```
+http://localhost:8000
+```
 
 ### From the second time onwards
 ```bash
