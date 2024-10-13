@@ -89,6 +89,10 @@ Format:
 # How To Deploy
 
 ### For first time only !
+**Make sure git is already installed on your device**
+1. Open CMD
+2. Navigate to the folder you want to put the project
+3. Follow the command below
 ```bash
 git clone https://github.com/refactorian/laravel-docker.git
 ```
