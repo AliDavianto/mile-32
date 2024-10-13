@@ -26,7 +26,7 @@ Your project will follow a three-branch hierarchy:
 2. **Staging**: This branch is for testing features that are ready for the QA  to review. Code is merged from the development branch to staging for quality assurance before it is promoted to main.
 3. **Development**: This branch is where all new features and bug fixes are implemented. Developers should work here and create pull requests to merge their changes into the staging branch.
 
-## How to Navigate, Merge Branches, and Pull Request
+## How to Navigate, Merge Branches, and Commit Format
 
 ### Navigating Between Branches
 To switch between branches in Git, use the following command:
@@ -60,6 +60,30 @@ To merge from staging to main:
 git checkout main
 git merge staging
 ```
+
+### Commit Message Format
+Format:
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+1.Type: Indicates the nature of the change. Common types include:
+-feat: A new feature
+-fix: A bug fix
+-docs: Documentation only changes
+-style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc.)
+-refactor: A code change that neither fixes a bug nor adds a feature
+-perf: A code change that improves performance
+-test: Adding missing or correcting existing tests
+-chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
+-Scope: (Optional) The part of the codebase affected (e.g., api, ui, database).
+2.Subject: A brief description of the change, written in the imperative mood (e.g., "add", "update", "remove"). Keep it concise (ideally 50 characters or less).
+3.Body: (Optional) A more detailed description of the change, explaining what and why, wrapped at 72 characters. This is where you can elaborate on the reason for the change and its impact.
+4.Footer: (Optional) Include any references to issues or tasks, such as Fixes #123 or Related to #456.
+
 ---
 
 # How To Deploy
@@ -96,10 +120,6 @@ composer setup
 docker compose up -d
 ```        
 # Notes
-
-### Laravel Versions
-- [Laravel 11.x](https://github.com/refactorian/laravel-docker/tree/main)
-- [Laravel 10.x](https://github.com/refactorian/laravel-docker/tree/laravel_10x)
 
 ### Laravel App
 - URL: http://localhost:8000
