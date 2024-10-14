@@ -7,7 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>gilar ganteng</h2>
-    <h2>gilar kontol</h2>
+    <h1>gillar miranda cocok 100%</h1>
 </body>
 </html>
