@@ -1,0 +1,47 @@
+/* Styles for the menu box */
+.menu-box {
+    height: 110px;
+    width: 310px; /* Lebar kotak menu */
+    background-color: #ffffff; /* Warna latar belakang kotak menu */
+    border: 2px solid #000; /* Warna dan tebal border */
+    margin: 50px auto; /* Margin otomatis untuk pusat */
+    display: flex; /* Menggunakan flexbox untuk tata letak */
+    align-items: center; /* Menyelaraskan item secara vertikal di tengah */
+    border-radius: 12px; /* Radius sudut */
+    overflow: hidden; /* Menghindari elemen yang melampaui batas */
+}
+
+.menu-image img {
+    width: 100px; /* Lebar gambar */
+    height: auto; /* Mempertahankan rasio aspek gambar */
+    border-radius: 12px; /* Radius sudut pada gambar */
+    margin-left: 5px;
+}
+
+.menu-description {
+    padding: 10px; /* Ruang di dalam kotak deskripsi */
+    display: flex; /* Menggunakan flexbox */
+    flex-direction: column; /* Mengatur teks ke arah kolom */
+}
+
+.title {
+    font-family: 'Poppins', sans-serif; /* Font untuk judul */
+    font-size: 12px; /* Ukuran font untuk judul */
+    font-weight: bold; /* Menebalkan font judul */
+    margin: 0; /* Menghilangkan margin default */
+    margin-bottom: 5px; /* Jarak antara judul dan deskripsi */
+}
+
+.description {
+    font-family: 'Poppins', sans-serif; /* Font untuk deskripsi */
+    font-size: 8px; /* Ukuran font untuk deskripsi */
+    margin: 0; /* Menghilangkan margin default */
+    margin-bottom: 5px; /* Jarak antara deskripsi dan harga */
+}
+
+.price {
+    font-family: 'Poppins', sans-serif; /* Font untuk harga */
+    font-size: 10px; /* Ukuran font untuk harga */
+    font-weight: bold; /* Menebalkan font harga */
+    margin: 0; /* Menghilangkan margin default */
+}
