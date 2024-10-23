@@ -39,15 +39,8 @@ class PesananController extends Controller
             // Dapatkan id_pesanan dari pesanan yang baru disimpan
             $id_pesanan = $pesanan->id_pesanan;
 
-            // Loop untuk menyimpan detail pesanan
-            foreach ($validatedData['pesanan'] as $item) {
-                DetailPesanan::create([
-                    'id_pesanan' => $id_pesanan,
-                    'id_menu' => $item['id_menu'],
-                    'kuantitas' => $item['kuantitas'],
-                    'harga' => $item['harga'],
-                ]);
-            }
+            // Panggil method baru untuk menyimpan detail pesanan
+            $this->createDetailPesanan($validatedData['pesanan'], $id_pesanan);
 
             // Commit transaksi jika semua berhasil
             DB::commit();
@@ -67,6 +60,19 @@ class PesananController extends Controller
                 'message' => 'Terjadi kesalahan saat menyimpan pesanan',
                 'error' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+    // Method untuk menyimpan detail pesanan
+    protected function createDetailPesanan(array $pesanan, int $id_pesanan)
+    {
+        foreach ($pesanan as $item) {
+            DetailPesanan::create([
+                'id_pesanan' => $id_pesanan,
+                'id_menu' => $item['id_menu'],
+                'kuantitas' => $item['kuantitas'],
+                'harga' => $item['harga'],
+            ]);
         }
     }
 
