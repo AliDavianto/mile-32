@@ -30,7 +30,7 @@ class ujicobaController extends Controller
             ],
             [
                 'title' => 'Jasmine Tea',
-                'description' => 'Ayam goreng yang disajikan dengan sambal dan tahu tempe.',
+                'description' => 'Teh jasmine yang segar dan aromatic.',
                 'price' => 8000,
                 'image' => 'jasminetea.png',
             ],
