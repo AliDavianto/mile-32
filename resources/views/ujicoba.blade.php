@@ -8,6 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="logo mile.png" alt="Logo Mile Cafe" class="logo-image"> <!-- Gambar logo -->
+            <div class="logo-text">
+                <h1>Miles 32</h1> <!-- Nama Cafe -->
+                <p>Temukan harmoni rasa dan cerita di Miles 32, tempat membawa pengalaman baru!</p> <!-- Teks di bawah nama -->
+            </div>
+        </div>
+    </div>
     @foreach ($menus as $menu)
         <div class="menu-box">
             <div class="menu-image">
@@ -120,5 +130,22 @@
             alert('Local Storage cleared!'); // Menampilkan pesan konfirmasi
         });
     </script>
+
+        <!-- Navbar Bawah -->
+        <div class="bottom-navbar">
+        <div class="nav-item">
+            <button class="nav-button" onclick="alert('Menu clicked!')">
+                <img src="menu.png" alt="Menu" class="nav-icon">
+                <p class="nav-text">MENU</p>
+            </button>
+        </div>
+        <div class="nav-item">
+            <button class="nav-button" onclick="alert('Keranjang clicked!')">
+                <img src="keranjang.png" alt="Keranjang" class="nav-icon">
+                <p class="nav-text">KERANJANG</p>
+            </button>
+        </div>
+    </div>
+
 </body>
 </html>

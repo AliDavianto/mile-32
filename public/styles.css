@@ -1,3 +1,37 @@
+/* CSS untuk Navbar */
+.navbar {
+    background-color: #FFD700; /* Warna kuning */
+    padding: 15px; /* Jarak dalam yang lebih besar */
+    display: flex; /* Menggunakan flexbox untuk tata letak */
+    align-items: center; /* Perataan vertikal */
+    font-family: 'Poppins', sans-serif; /* Font */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+}
+
+.navbar .logo-container {
+    display: flex; /* Menggunakan flexbox untuk logo dan teks */
+    align-items: center; /* Perataan vertikal logo dan teks */
+}
+
+.navbar .logo-image {
+    width: 50px; /* Ukuran gambar logo */
+    height: auto; /* Tinggi otomatis */
+    margin-right: 15px; /* Jarak antara gambar dan teks */
+}
+
+.navbar .logo-text h1 {
+    font-size: 1.8em; /* Ukuran font untuk nama cafe */
+    color: #333; /* Warna teks nama cafe */
+    margin: 0; /* Menghilangkan margin default */
+}
+
+.navbar .logo-text p {
+    font-size: 0.9em; /* Ukuran font untuk teks deskripsi */
+    color: #555; /* Warna teks deskripsi */
+    margin: 0; /* Menghilangkan margin default */
+}
+
+
 /* Styles for the body */
 body {
     background-color: #F8F8F8; /* Mengubah warna latar belakang website */
@@ -100,4 +134,40 @@ body {
 .quantity-controls #quantity {
     font-size: 14px; /* Ukuran font untuk jumlah */
     font-weight: bold; /* Menebalkan font jumlah */
+}
+
+/* CSS untuk Navbar Bawah */
+.bottom-navbar {
+    display: flex; /* Menggunakan flexbox untuk tata letak horizontal */
+    justify-content: space-around; /* Jarak antar item */
+    align-items: center; /* Memastikan item sejajar secara vertikal */
+    background-color: #FF6347; /* Warna latar belakang navbar bawah (merah tomat) */
+    padding: 10px 0; /* Jarak atas dan bawah */
+    position: fixed; /* Mengatur posisi tetap di bagian bawah layar */
+    left: 0; /* Menempel di sisi kiri */
+    right: 0; /* Menempel di sisi kanan */
+    bottom: 0; /* Menempel di bagian bawah */
+    z-index: 1000; /* Memastikan navbar di atas konten lainnya */
+}
+
+.nav-item {
+    flex: 1; /* Setiap item mengambil ruang yang sama */
+    text-align: center; /* Memusatkan teks di bawah ikon */
+}
+
+.nav-button {
+    background: none; /* Menghilangkan latar belakang tombol */
+    border: none; /* Menghilangkan border tombol */
+    cursor: pointer; /* Mengubah kursor saat hover */
+}
+
+.nav-icon {
+    width: 40px; /* Ukuran ikon */
+    height: auto; /* Tinggi otomatis */
+}
+
+.nav-text {
+    font-weight: bold; /* Teks tebal */
+    color: #FFFFFF; /* Warna teks putih */
+    margin-top: 5px; /* Jarak antara ikon dan teks */
 }
