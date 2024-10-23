@@ -1,9 +1,16 @@
+/* Styles for the body */
+body {
+    background-color: #F8F8F8; /* Mengubah warna latar belakang website */
+    margin: 0; /* Menghilangkan margin default */
+    padding: 0; /* Menghilangkan padding default */
+}
+
 /* Styles for the menu box */
 .menu-box {
     height: 110px;
     width: 310px; /* Lebar kotak menu */
     background-color: #ffffff; /* Warna latar belakang kotak menu */
-    border: 2px solid #000; /* Warna dan tebal border */
+    border: 2px solid #F2F2F2; /* Warna dan tebal border */
     margin: 50px auto; /* Margin otomatis untuk pusat */
     display: flex; /* Menggunakan flexbox untuk tata letak */
     align-items: center; /* Menyelaraskan item secara vertikal di tengah */
@@ -22,6 +29,7 @@
     padding: 10px; /* Ruang di dalam kotak deskripsi */
     display: flex; /* Menggunakan flexbox */
     flex-direction: column; /* Mengatur teks ke arah kolom */
+    width: 100%; /* Lebar penuh untuk memastikan konten diatur dengan baik */
 }
 
 .title {
@@ -39,9 +47,57 @@
     margin-bottom: 5px; /* Jarak antara deskripsi dan harga */
 }
 
+.price-controls {
+    display: flex; /* Membuat harga dan tombol Add atau kontrol jumlah dalam satu baris */
+    justify-content: space-between; /* Memisahkan harga dan tombol */
+    align-items: center; /* Menyelaraskan secara vertikal */
+}
+
+/* Style untuk harga */
 .price {
     font-family: 'Poppins', sans-serif; /* Font untuk harga */
     font-size: 10px; /* Ukuran font untuk harga */
     font-weight: bold; /* Menebalkan font harga */
     margin: 0; /* Menghilangkan margin default */
+}
+
+/* Styles untuk tombol Add */
+.add-btn {
+    background-color: #f0c040; /* Warna latar belakang tombol Add */
+    color: #fff; /* Warna teks tombol */
+    border: none; /* Menghapus border default */
+    padding: 5px 15px; /* Ruang dalam tombol */
+    font-size: 14px; /* Ukuran font untuk tombol */
+    border-radius: 5px; /* Radius sudut tombol */
+    cursor: pointer; /* Menampilkan pointer saat di-hover */
+}
+
+.add-btn:focus {
+    outline: none; /* Menghapus outline saat tombol difokuskan */
+}
+
+/* Styles untuk kontrol jumlah */
+.quantity-controls {
+    display: flex; /* Mengatur tombol + dan - serta jumlah dalam satu baris */
+    align-items: center; /* Menyelaraskan elemen secara vertikal */
+    gap: 5px; /* Jarak antara tombol dan jumlah */
+}
+
+.quantity-controls button {
+    background-color: #000; /* Warna latar belakang tombol */
+    color: #fff; /* Warna teks tombol */
+    border: none; /* Menghapus border default */
+    padding: 5px 10px; /* Ruang dalam tombol */
+    font-size: 14px; /* Ukuran font untuk tombol */
+    border-radius: 5px; /* Radius sudut tombol */
+    cursor: pointer; /* Menampilkan pointer saat di-hover */
+}
+
+.quantity-controls button:focus {
+    outline: none; /* Menghapus outline saat tombol difokuskan */
+}
+
+.quantity-controls #quantity {
+    font-size: 14px; /* Ukuran font untuk jumlah */
+    font-weight: bold; /* Menebalkan font jumlah */
 }
