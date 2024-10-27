@@ -1,26 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RedisController;
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-Route::get('/', [RedisController::class, 'getMenu']);
-use App\Http\Controllers\ujicobaController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PesananController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// Controller Routes
+Route::get('/menu', [MenuController::class, 'getMenu']);
 
-// Route::get('/ujicoba', function () {
-//     return view('ujicoba');
-// });
+// Post cart data (POST request for data submission)
+Route::get('/cart', [MenuController::class, 'getMenuCart']);
 
-
-Route::get('/ujicoba', [ujicobaController::class, 'index']);
-
-
+// Checkout route
 Route::post('/checkout', [PesananController::class, 'checkout']);

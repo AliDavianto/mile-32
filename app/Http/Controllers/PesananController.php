@@ -7,6 +7,7 @@ use App\Models\DetailPesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class PesananController extends Controller
 {
@@ -18,9 +19,13 @@ class PesananController extends Controller
             'nomor_meja' => 'required|integer',
             'pesanan' => 'required|array',
             'pesanan.*.id_menu' => 'required|integer',
-            'pesanan.*.kuantitas' => 'required|integer|min:1',
-            'pesanan.*.harga' => 'required|numeric|min:0',
+            'pesanan.*.kuantitas' => 'required|integer|min:1', // Changed kuantitas to quantity
+            'pesanan.*.harga' => 'required|numeric|min:0', // Added validation for 'harga'
+            'total_harga' => 'required|numeric|min:0',
         ]);
+
+        // Logging data permintaan
+        Log::info('Data pesanan yang diterima:', $validatedData);
 
         try {
             // Mulai transaksi database
@@ -30,16 +35,14 @@ class PesananController extends Controller
             $pesanan = Pesanan::create([
                 'nomor_meja' => $validatedData['nomor_meja'],
                 'waktu_pemesanan' => now(),
-                'status_pesanan' => 'pending', // atau status yang diinginkan
-                'total_pembayaran' => array_reduce($validatedData['pesanan'], function ($total, $item) {
-                    return $total + ($item['kuantitas'] * $item['harga']);
-                }, 0),
+                'status_pesanan' => 'menunggu', // atau status yang diinginkan
+                'total_pembayaran' => $validatedData['total_harga'],
             ]);
 
             // Dapatkan id_pesanan dari pesanan yang baru disimpan
             $id_pesanan = $pesanan->id_pesanan;
 
-            // Panggil method baru untuk menyimpan detail pesanan
+            // Panggil method untuk menyimpan detail pesanan
             $this->createDetailPesanan($validatedData['pesanan'], $id_pesanan);
 
             // Commit transaksi jika semua berhasil
@@ -50,7 +53,6 @@ class PesananController extends Controller
                 'message' => 'Pesanan berhasil disimpan',
                 'data' => $pesanan,
             ], 201);
-
         } catch (Exception $e) {
             // Rollback transaksi jika ada error
             DB::rollBack();
@@ -70,39 +72,20 @@ class PesananController extends Controller
             DetailPesanan::create([
                 'id_pesanan' => $id_pesanan,
                 'id_menu' => $item['id_menu'],
-                'kuantitas' => $item['kuantitas'],
+                'kuantitas' => $item['kuantitas'], // Changed kuantitas to quantity
                 'harga' => $item['harga'],
             ]);
         }
     }
 
-    // Method untuk checkout dengan data dummy
+    // Method untuk checkout
     public function checkout(Request $request)
     {
-        // Data dummy untuk nomor meja dan pesanan
-        $dataDummy = [
-            'nomor_meja' => 5, // Contoh nomor meja
-            'pesanan' => [
-                [
-                    'id_menu' => 1, // ID menu pertama
-                    'kuantitas' => 2, // Jumlah
-                    'harga' => 30000 // Harga per item
-                ],
-                [
-                    'id_menu' => 2, // ID menu kedua
-                    'kuantitas' => 1, // Jumlah
-                    'harga' => 45000 // Harga per item
-                ],
-                [
-                    'id_menu' => 3, // ID menu ketiga
-                    'kuantitas' => 3, // Jumlah
-                    'harga' => 25000 // Harga per item
-                ],
-            ],
-        ];
+        // Simpan data ke tabel Pesanan
+        // Panggil fungsi createPesanan dengan data request
+        $pesanan = $this->createPesanan($request);
 
-        // Simulasi pemanggilan method createPesanan dengan data dummy
-        $request->merge($dataDummy);
-        return $this->createPesanan($request);
+        // Kembalikan respons
+        return response()->json($pesanan, 201);
     }
 }
