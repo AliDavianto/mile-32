@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Menu Mile Cafe 32</title>
-    <link rel="stylesheet" href="{{ asset('styles.css') }}">
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 </head>
 
@@ -16,7 +16,7 @@
         <div class="logo-container">
             <img src="logo mile.png" alt="Logo Mile Cafe" class="logo-image">
             <div class="logo-text">
-                <h1>Miles 32</h1>
+                <h1>Mile 32</h1>
                 <p>Temukan harmoni rasa dan cerita di Miles 32, tempat membawa pengalaman baru!</p>
             </div>
         </div>

@@ -1,6 +1,6 @@
 /* CSS untuk Navbar */
 .navbar {
-    background-color: #FFD700; /* Warna kuning */
+    background-color: #FFD900; /* Warna kuning */
     padding: 15px; /* Jarak dalam yang lebih besar */
     display: flex; /* Menggunakan flexbox untuk tata letak */
     align-items: center; /* Perataan vertikal */
@@ -141,7 +141,7 @@ body {
     display: flex; /* Menggunakan flexbox untuk tata letak horizontal */
     justify-content: space-around; /* Jarak antar item */
     align-items: center; /* Memastikan item sejajar secara vertikal */
-    background-color: #FF6347; /* Warna latar belakang navbar bawah (merah tomat) */
+    background-color: #ffffff; /* Warna latar belakang navbar bawah putih */
     padding: 10px 0; /* Jarak atas dan bawah */
     position: fixed; /* Mengatur posisi tetap di bagian bawah layar */
     left: 0; /* Menempel di sisi kiri */
@@ -168,6 +168,17 @@ body {
 
 .nav-text {
     font-weight: bold; /* Teks tebal */
-    color: #FFFFFF; /* Warna teks putih */
+    color: #000000; /* Warna teks hitam */
     margin-top: 5px; /* Jarak antara ikon dan teks */
 }
+
+/* CSS untuk Tombol Checkout */
+.checkout-button {
+    background-color: #FFD900; /* Warna latar belakang tombol */
+    font-weight: bold; /* Membuat teks menjadi tebal */
+    border: none; /* Menghilangkan border tombol */
+    padding: 10px 20px; /* Memberi ruang di dalam tombol */
+    cursor: pointer; /* Mengubah kursor saat hover */
+    border-radius: 13px; /* Membuat sudut tombol melengkung */
+}
+

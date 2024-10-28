@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Keranjang Mile Cafe 32</title>
-    <link rel="stylesheet" href="{{ asset('styles.css') }}">
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 </head>
 
@@ -16,7 +16,7 @@
         <div class="logo-container">
             <img src="logo mile.png" alt="Logo Mile Cafe" class="logo-image">
             <div class="logo-text">
-                <h1>Miles 32</h1>
+                <h1>Mile 32</h1>
                 <p>Temukan harmoni rasa dan cerita di Miles 32, tempat membawa pengalaman baru!</p>
             </div>
         </div>
@@ -32,7 +32,8 @@
             <!-- Total price will be populated here by JavaScript -->
         </div>
 
-        <<button id="checkout-btn">Checkout</button>
+        <button id="checkout-btn" class="checkout-button">CHECKOUT</button>
+
 
 
     </main>
@@ -44,13 +45,13 @@
     <footer class="bottom-navbar">
         <div class="nav-item">
             <button class="nav-button" onclick="location.href='/menu'">
-                <img src="menu.png" alt="Menu" class="nav-icon">
+                <img src="menuputih.png" alt="Menu" class="nav-icon">
                 <p class="nav-text">MENU</p>
             </button>
         </div>
         <div class="nav-item">
             <button class="nav-button" onclick="location.href='/cart'">
-                <img src="keranjang.png" alt="Keranjang" class="nav-icon">
+                <img src="keranjanghitam.png" alt="Keranjang" class="nav-icon">
                 <p class="nav-text">KERANJANG</p>
             </button>
         </div>
