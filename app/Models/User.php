@@ -34,7 +34,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+    
+    public static $rules = [
+        'jabatan' => 'required|in:admin,staff,manajer,kasir'
+    ];
     /**
      * Get the attributes that should be cast.
      *
