@@ -12,3 +12,8 @@ Route::get('/cart', [MenuController::class, 'getMenuCart']);
 
 // Checkout route
 Route::post('/checkout', [PesananController::class, 'checkout']);
+
+// Route for login view
+Route::get('/login', function () {
+    return view('login');
+});

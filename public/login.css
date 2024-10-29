@@ -1,0 +1,254 @@
+/* Global Styles */
+body {
+    background-color: #F8F8F8; /* Background color */
+    font-family: 'Poppins', sans-serif; /* Font family */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* CSS untuk Navbar */
+.navbar {
+    background-color: #FFD900; /* Warna latar belakang navbar */
+    width: 390px; /* Lebar navbar */
+    height: 131px; /* Tinggi navbar */
+    display: flex;
+    align-items: center;
+    padding: 15px; /* Jarak dalam */
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+}
+
+.logo-container {
+    display: flex; /* Membuat tata letak horizontal */
+    align-items: center; /* Menyelaraskan elemen vertikal */
+    gap: 15px; /* Jarak antara logo dan teks */
+}
+
+.logo-image {
+    width: 78px; /* Lebar logo */
+    height: 70px; /* Tinggi logo */
+}
+
+.logo-text h1 {
+    font-size: 1.8em; /* Ukuran font untuk nama cafe */
+    color: #333; /* Warna teks nama cafe */
+    margin: 0; /* Menghilangkan margin */
+}
+
+.logo-text p {
+    font-size: 0.9em; /* Ukuran font untuk teks deskripsi */
+    color: #555;
+    margin: 0; /* Menghilangkan margin */
+    margin-top: 5px; /* Jarak antara nama dan deskripsi */
+}
+
+/* Form Container */
+.form-container {
+    width: 380px; /* Width of the form */
+    background-color: #FFFFFF; /* Background color of form */
+    padding: 20px; /* Padding inside form */
+    border-radius: 0; /* Sudut tajam 90 derajat */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for form */
+}
+
+.form-container img {
+    width: 100%;
+    height: auto;
+    max-width: 250px; /* Maximum width for the image */
+    margin: 0 auto 20px auto; /* Centering and spacing below image */
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.form-container h2 {
+    font-size: 1.2em; /* Font size for form heading */
+    font-weight: bold; /* Bold font for heading */
+    color: #333;
+    margin: 20px 0 10px; /* Spacing around heading */
+    margin-bottom: 20px;
+}
+
+/* Welcome Message */
+.form-container .welcome-message {
+    font-weight: bold; /* Make text bold */
+    font-size: 15px; /* Set font size to 15px */
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form Styles */
+.form-container label {
+    display: block;
+    font-weight: normal; /* Ensure text is not bold */
+    font-size: 15px; /* Set font size to 9px */
+    color: #333;
+    text-align: left; /* Align text to the left */
+    margin-bottom: 5px; /* Space between label and input */
+    margin-left: 70px;
+}
+
+.form-container input[type="text"],
+.form-container input[type="password"] {
+    width: 242px; /* Set width of input fields */
+    height: 26px; /* Set height of input fields */
+    padding: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Rounded corners for inputs */
+    font-size: 0.9em;
+}
+
+.form-container .login-btn {
+    width: 242px; /* Set width of login button */
+    height: 26px; /* Set height of login button */
+    background-color: #FFD900; /* Background color of button */
+    color: #fff; /* Text color for button */
+    font-weight: bold;
+    border: none; /* No border */
+    border-radius: 20px; /* Sudut melengkung 20 piksel */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 0.9em;
+}
+
+.form-container .login-btn:hover {
+    background-color: #e6c200; /* Darker color on hover */
+}
+
+/* Additional CSS for Other Components */
+
+/* Styles for the body */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Styles for the menu box */
+.menu-box {
+    height: 110px;
+    width: 310px; /* Lebar kotak menu */
+    background-color: #ffffff; /* Warna latar belakang kotak menu */
+    border: 2px solid #F2F2F2; /* Warna dan tebal border */
+    margin: 50px auto; /* Margin otomatis untuk pusat */
+    display: flex; /* Menggunakan flexbox untuk tata letak */
+    align-items: center; /* Menyelaraskan item secara vertikal di tengah */
+    border-radius: 12px; /* Radius sudut */
+    overflow: hidden; /* Menghindari elemen yang melampaui batas */
+}
+
+.menu-image img {
+    width: 100px; /* Lebar gambar */
+    height: auto; /* Mempertahankan rasio aspek gambar */
+    border-radius: 12px; /* Radius sudut pada gambar */
+    margin-left: 5px;
+}
+
+.menu-description {
+    padding: 10px; /* Ruang di dalam kotak deskripsi */
+    display: flex; /* Menggunakan flexbox */
+    flex-direction: column; /* Mengatur teks ke arah kolom */
+    width: 100%; /* Lebar penuh untuk memastikan konten diatur dengan baik */
+}
+
+.title {
+    font-family: 'Poppins', sans-serif; /* Font untuk judul */
+    font-size: 12px; /* Ukuran font untuk judul */
+    font-weight: bold; /* Menebalkan font judul */
+    margin: 0; /* Menghilangkan margin default */
+    margin-bottom: 5px; /* Jarak antara judul dan deskripsi */
+}
+
+.description {
+    font-family: 'Poppins', sans-serif; /* Font untuk deskripsi */
+    font-size: 8px; /* Ukuran font untuk deskripsi */
+    margin: 0; /* Menghilangkan margin default */
+    margin-bottom: 5px; /* Jarak antara deskripsi dan harga */
+}
+
+.price-controls {
+    display: flex; /* Membuat harga dan tombol Add atau kontrol jumlah dalam satu baris */
+    justify-content: space-between; /* Memisahkan harga dan tombol */
+    align-items: center; /* Menyelaraskan secara vertikal */
+}
+
+/* Style untuk harga */
+.price {
+    font-family: 'Poppins', sans-serif; /* Font untuk harga */
+    font-size: 10px; /* Ukuran font untuk harga */
+    font-weight: bold; /* Menebalkan font harga */
+    margin: 0; /* Menghilangkan margin default */
+}
+
+/* Styles untuk tombol Add */
+.add-btn {
+    background-color: #f0c040; /* Warna latar belakang tombol Add */
+    color: #fff; /* Warna teks tombol */
+    border: none; /* Menghapus border default */
+    padding: 5px 15px; /* Ruang dalam tombol */
+    font-size: 14px; /* Ukuran font untuk tombol */
+    border-radius: 5px; /* Radius sudut tombol */
+    cursor: pointer; /* Menampilkan pointer saat di-hover */
+}
+
+.add-btn:focus {
+    outline: none; /* Menghapus outline saat tombol difokuskan */
+}
+
+/* Styles untuk kontrol jumlah */
+.quantity-controls {
+    display: flex; /* Mengatur tombol + dan - serta jumlah dalam satu baris */
+    align-items: center; /* Menyelaraskan elemen secara vertikal */
+    gap: 5px; /* Jarak antara tombol dan jumlah */
+}
+
+.quantity-controls button {
+    background-color: #000; /* Warna latar belakang tombol */
+    color: #fff; /* Warna teks tombol */
+    border: none; /* Menghapus border default */
+    padding: 5px 10px; /* Ruang dalam tombol */
+    font-size: 14px; /* Ukuran font untuk tombol */
+    border-radius: 5px; /* Radius sudut tombol */
+    cursor: pointer; /* Menampilkan pointer saat di-hover */
+}
+
+.quantity-controls button:focus {
+    outline: none; /* Menghapus outline saat tombol difokuskan */
+}
+
+.quantity-controls #quantity {
+    font-size: 14px; /* Ukuran font untuk jumlah */
+    font-weight: bold; /* Menebalkan font jumlah */
+}
+
+/* CSS untuk Navbar Bawah */
+.bottom-navbar {
+    display: flex; /* Menggunakan flexbox untuk tata letak horizontal */
+    justify-content: space-around; /* Jarak antar item */
+    align-items: center; /* Memastikan item sejajar secara vertikal */
+    background-color: #ffffff; /* Warna latar belakang navbar bawah putih */
+    padding: 10px 0; /* Jarak atas dan bawah */
+    position: fixed; /* Mengatur posisi tetap di bagian bawah layar */
+    left: 0; /* Menempel di sisi kiri */
+    right: 0; /* Menempel di sisi kanan */
+    bottom: 0; /* Menempel di bagian bawah */
+    z-index: 1000; /* Memastikan navbar di atas konten lainnya */
+}
+
+.nav-item {
+    flex: 1; /* Membuat semua item mempunyai lebar yang sama */
+    text-align: center; /* Menyelaraskan ikon dan teks di tengah */
+    font-family: 'Poppins', sans-serif; /* Font untuk label */
+}
+
+.nav-icon {
+    font-size: 24px; /* Ukuran font ikon */
+    color: #333; /* Warna ikon */
+}
+
+.nav-label {
+    font-size: 12px; /* Ukuran font label di bawah ikon */
+    color: #333; /* Warna label */
+}
