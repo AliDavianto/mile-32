@@ -27,7 +27,8 @@
         <img src="loginlogo.jpg" alt="Illustration">
         <h2>WELCOME TO MILE 32</h2>
         
-        <form action="/login" method="post">
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
             <label for="email">EMAIL ADDRESS</label>
             <input type="text" id="email" name="email" placeholder="Enter Your Email Address">
             
@@ -36,6 +37,7 @@
             
             <button type="submit" class="login-btn">Login</button>
         </form>
+        
     </div>
 </body>
 
