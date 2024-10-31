@@ -88,4 +88,67 @@ class PesananController extends Controller
         // Kembalikan respons
         return response()->json($pesanan, 201);
     }
+    {
+        public function index()
+        {
+            $pesanans = Pesanan::all();
+            return view('pesanans.index', compact('pesanans'));
+        }
+    
+        public function create()
+        {
+            return view('pesanans.create');
+        }
+    
+        public function store(Request $request)
+        {
+            $request->validate([
+                'id_keranjang' => 'required|integer',
+                'nomor_meja' => 'required|integer|max:999',
+                'waktu_pemesanan' => 'required|date',
+                'status_pesanan' => 'required|in:menunggu,diproses,selesai',
+                'total_pembayaran' => 'required|integer',
+            ]);
+    
+            Pesanan::create($request->all());
+    
+            return redirect()->route('pesanans.index')->with('success', 'Pesanan berhasil ditambahkan.');
+        }
+    
+        public function show($id)
+        {
+            $pesanan = Pesanan::findOrFail($id);
+            return view('pesanans.show', compact('pesanan'));
+        }
+    
+        public function edit($id)
+        {
+            $pesanan = Pesanan::findOrFail($id);
+            return view('pesanans.edit', compact('pesanan'));
+        }
+    
+        public function update(Request $request, $id)
+        {
+            $request->validate([
+                'id_keranjang' => 'required|integer',
+                'nomor_meja' => 'required|integer|max:999',
+                'waktu_pemesanan' => 'required|date',
+                'status_pesanan' => 'required|in:menunggu,diproses,selesai',
+                'total_pembayaran' => 'required|integer',
+            ]);
+    
+            $pesanan = Pesanan::findOrFail($id);
+            $pesanan->update($request->all());
+    
+            return redirect()->route('pesanans.index')->with('success', 'Pesanan berhasil diperbarui.');
+        }
+    
+        public function destroy($id)
+        {
+            $pesanan = Pesanan::findOrFail($id);
+            $pesanan->delete();
+    
+            return redirect()->route('pesanans.index')->with('success', 'Pesanan berhasil dihapus.');
+        }
+    }
 }

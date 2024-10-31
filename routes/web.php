@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\DetailPesananController;
+use App\Http\Controllers\StafController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AuthController;
 
@@ -34,3 +37,11 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/dashboard-kasir', [PesananController::class, 'index']);
 Route::get('/dashboard-staff', [PesananController::class, 'index']);
 Route::get('/laporan', [LaporanController::class, 'index']);
+
+//Route CRUD from all Models
+Route::resource('menus', MenuController::class);
+Route::resource('pesanans', PesananController::class);
+Route::resource('detail_pesanans', DetailPesananController::class);
+Route::resource('stafs', StafController::class);
+Route::resource('pembayarans', PembayaranController::class);
+Route::resource('laporans', LaporanController::class);
