@@ -12,7 +12,7 @@ body {
 /* CSS untuk Navbar */
 .navbar {
     background-color: #FFD900; /* Warna latar belakang navbar */
-    width: 1230px; /* Lebar navbar */
+    width: 100%; /* Lebar navbar */
     height: 80px; /* Tinggi navbar */
     display: flex;
     align-items: center;
