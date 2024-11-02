@@ -12,7 +12,6 @@ class DetailPesananController extends Controller
         $detailPesanans = DetailPesanan::all();
         return view('detail_pesanans.index', compact('detailPesanans'));
     }
-
     public function create()
     {
         return view('detail_pesanans.create');
@@ -21,42 +20,49 @@ class DetailPesananController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_pesanan' => 'required|integer',
-            'id_menu' => 'required|integer',
-            'kuantitas' => 'required|integer',
-            'harga' => 'required|integer',
+            'id_pesanan' => 'required|integer|exists:pesanans,id_pesanan',
+            'id_menu' => 'required|integer|exists:menus,id_menu',
+            'kuantitas' => 'required|integer|min:1',
+            'harga' => 'required|integer|min:0',
         ]);
 
-        DetailPesanan::create($request->all());
+        $detailPesanan = DetailPesanan::create([
+            'id_pesanan' => $request->id_pesanan,
+            'id_menu' => $request->id_menu,
+            'kuantitas' => $request->kuantitas,
+            'harga' => $request->harga,
+        ]);
 
-        return redirect()->route('detail_pesanans.index')->with('success', 'Detail pesanan berhasil ditambahkan.');
-    }
-
-    public function show($id)
-    {
-        $detailPesanan = DetailPesanan::findOrFail($id);
-        return view('detail_pesanans.show', compact('detailPesanan'));
-    }
-
-    public function edit($id)
-    {
-        $detailPesanan = DetailPesanan::findOrFail($id);
-        return view('detail_pesanans.edit', compact('detailPesanan'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail pesanan berhasil ditambahkan.',
+            'data' => $detailPesanan
+        ], 201);
     }
 
     public function update(Request $request, $id)
     {
+        $detailPesanan = DetailPesanan::findOrFail($id);
+
         $request->validate([
-            'id_pesanan' => 'required|integer',
-            'id_menu' => 'required|integer',
-            'kuantitas' => 'required|integer',
-            'harga' => 'required|integer',
+            'id_pesanan' => 'required|integer|exists:pesanans,id_pesanan',
+            'id_menu' => 'required|integer|exists:menus,id_menu',
+            'kuantitas' => 'required|integer|min:1',
+            'harga' => 'required|integer|min:0',
         ]);
 
-        $detailPesanan = DetailPesanan::findOrFail($id);
-        $detailPesanan->update($request->all());
+        $detailPesanan->update([
+            'id_pesanan' => $request->id_pesanan,
+            'id_menu' => $request->id_menu,
+            'kuantitas' => $request->kuantitas,
+            'harga' => $request->harga,
+        ]);
 
-        return redirect()->route('detail_pesanans.index')->with('success', 'Detail pesanan berhasil diperbarui.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail pesanan berhasil diperbarui.',
+            'data' => $detailPesanan
+        ], 200);
     }
 
     public function destroy($id)
@@ -64,6 +70,9 @@ class DetailPesananController extends Controller
         $detailPesanan = DetailPesanan::findOrFail($id);
         $detailPesanan->delete();
 
-        return redirect()->route('detail_pesanans.index')->with('success', 'Detail pesanan berhasil dihapus.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail pesanan berhasil dihapus.'
+        ], 200);
     }
 }

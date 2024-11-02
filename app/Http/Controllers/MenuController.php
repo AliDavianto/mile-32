@@ -8,6 +8,11 @@ use App\Models\Menu;
 
 class MenuController extends Controller
 {
+    public function index()
+        {
+            $menus = Menu::all();
+            return view('menus.index', compact('menus'));
+        }
     // Method to retrieve menu
     public function getMenu(Request $request)
     {
@@ -38,13 +43,6 @@ class MenuController extends Controller
         }
     }
     {
-        // Show all menu items
-        public function index()
-        {
-            $menus = Menu::all();
-            return view('menus.index', compact('menus'));
-        }
-    
         // Show form to create a new menu item
         public function create()
         {
@@ -53,57 +51,111 @@ class MenuController extends Controller
     
         // Store a new menu item
         public function store(Request $request)
-        {
-            $request->validate([
-                'nama_produk' => 'required|string|max:50',
-                'deskripsi' => 'required|string',
-                'harga' => 'required|integer',
-                'kategori' => 'required|in:Makanan,Minuman,add on',
-                'diskon' => 'nullable|integer',
-                'gambar' => 'nullable|string|max:255',
-            ]);
-    
-            Menu::create($request->all());
-            return redirect()->route('menus.index')->with('success', 'Menu created successfully.');
+    {
+        $request->validate([
+            'nama_produk' => 'required|string|max:50',
+            'deskripsi' => 'nullable|string',
+            'harga' => 'required|integer|min:0',
+            'kategori' => 'required|in:Makanan,Minuman,add on',
+            'diskon' => 'nullable|integer|min:0|max:100',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048' // Validasi gambar
+        ]);
+
+        $gambarPath = null;
+
+        // Jika gambar di-upload
+        if ($request->hasFile('gambar')) {
+            // Menyimpan gambar ke folder public/image/menu
+            $gambar = $request->file('gambar');
+            $gambarName = time() . '_' . $gambar->getClientOriginalName();
+            $gambarPath = 'image/menu/' . $gambarName;
+
+            // Pindahkan file ke folder public/image/menu
+            $gambar->move(public_path('image/menu'), $gambarName);
         }
-    
-        // Show a specific menu item
-        public function show($id)
-        {
-            $menu = Menu::find($id);
-            return view('menus.show', compact('menu'));
-        }
-    
-        // Show form to edit a menu item
-        public function edit($id)
-        {
-            $menu = Menu::find($id);
-            return view('menus.edit', compact('menu'));
-        }
-    
-        // Update a specific menu item
-        public function update(Request $request, $id)
-        {
-            $request->validate([
-                'nama_produk' => 'required|string|max:50',
-                'deskripsi' => 'required|string',
-                'harga' => 'required|integer',
-                'kategori' => 'required|in:Makanan,Minuman,add on',
-                'diskon' => 'nullable|integer',
-                'gambar' => 'nullable|string|max:255',
-            ]);
-    
-            $menu = Menu::find($id);
-            $menu->update($request->all());
-            return redirect()->route('menus.index')->with('success', 'Menu updated successfully.');
-        }
-    
-        // Delete a specific menu item
-        public function destroy($id)
-        {
-            $menu = Menu::find($id);
-            $menu->delete();
-            return redirect()->route('menus.index')->with('success', 'Menu deleted successfully.');
-        }
+
+        // Menyimpan item menu baru ke database
+        $menu = Menu::create([
+            'nama_produk' => $request->nama_produk,
+            'deskripsi' => $request->deskripsi,
+            'harga' => $request->harga,
+            'kategori' => $request->kategori,
+            'diskon' => $request->diskon,
+            'gambar' => $gambarPath // Menyimpan path gambar
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Item menu berhasil ditambahkan.',
+            'data' => $menu
+        ], 201);
     }
+    public function update(Request $request, $id)
+    {
+        $menu = Menu::findOrFail($id);
+
+        $request->validate([
+            'nama_produk' => 'required|string|max:50',
+            'deskripsi' => 'nullable|string',
+            'harga' => 'required|integer|min:0',
+            'kategori' => 'required|in:Makanan,Minuman,add on',
+            'diskon' => 'nullable|integer|min:0|max:100',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048' // Validasi gambar
+        ]);
+
+        $gambarPath = $menu->gambar;
+
+        // Jika ada gambar baru di-upload
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            if ($gambarPath && File::exists(public_path($gambarPath))) {
+                File::delete(public_path($gambarPath));
+            }
+
+            // Simpan gambar baru
+            $gambar = $request->file('gambar');
+            $gambarName = time() . '_' . $gambar->getClientOriginalName();
+            $gambarPath = 'image/menu/' . $gambarName;
+
+            // Pindahkan file ke folder public/image/menu
+            $gambar->move(public_path('image/menu'), $gambarName);
+        }
+
+        // Update item menu di database
+        $menu->update([
+            'nama_produk' => $request->nama_produk,
+            'deskripsi' => $request->deskripsi,
+            'harga' => $request->harga,
+            'kategori' => $request->kategori,
+            'diskon' => $request->diskon,
+            'gambar' => $gambarPath // Update path gambar baru
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Item menu berhasil diperbarui.',
+            'data' => $menu
+        ], 200);
+    }
+
+    
+    public function destroy($id)
+    {
+        $menu = Menu::findOrFail($id);
+
+        // Hapus gambar dari folder public/image/menu jika ada
+        if ($menu->gambar && File::exists(public_path($menu->gambar))) {
+            File::delete(public_path($menu->gambar));
+        }
+
+        // Hapus item menu dari database
+        $menu->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Item menu berhasil dihapus.'
+        ], 200);
+    }
+}
+
 }

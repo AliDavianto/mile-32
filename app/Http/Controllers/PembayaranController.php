@@ -12,7 +12,6 @@ class PembayaranController extends Controller
         $pembayarans = Pembayaran::all();
         return view('pembayarans.index', compact('pembayarans'));
     }
-
     public function create()
     {
         return view('pembayarans.create');
@@ -22,41 +21,39 @@ class PembayaranController extends Controller
     {
         $request->validate([
             'id_pesanan' => 'required|integer',
-            'metode_pembayaran' => 'required|string',
+            'metode_pembayaran' => 'required|in:Digital,Non-Digital',
             'total_pembayaran' => 'required|integer',
-            'status_pembayaran' => 'required|in:lunas,belum lunas',
+            'status_pembayaran' => 'required|in:berhasil,gagal,menunggu',
+            'waktu_transaksi' => 'required|date',
         ]);
 
-        Pembayaran::create($request->all());
+        $pembayaran = Pembayaran::create($request->all());
 
-        return redirect()->route('pembayarans.index')->with('success', 'Pembayaran berhasil ditambahkan.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Pembayaran berhasil ditambahkan.',
+            'data' => $pembayaran
+        ], 201);
     }
-
-    public function show($id)
-    {
-        $pembayaran = Pembayaran::findOrFail($id);
-        return view('pembayarans.show', compact('pembayaran'));
-    }
-
-    public function edit($id)
-    {
-        $pembayaran = Pembayaran::findOrFail($id);
-        return view('pembayarans.edit', compact('pembayaran'));
-    }
-
     public function update(Request $request, $id)
     {
+        $pembayaran = Pembayaran::findOrFail($id);
+
         $request->validate([
             'id_pesanan' => 'required|integer',
-            'metode_pembayaran' => 'required|string',
+            'metode_pembayaran' => 'required|in:Digital,Non-Digital',
             'total_pembayaran' => 'required|integer',
-            'status_pembayaran' => 'required|in:lunas,belum lunas',
+            'status_pembayaran' => 'required|in:berhasil,gagal,menunggu',
+            'waktu_transaksi' => 'required|date',
         ]);
 
-        $pembayaran = Pembayaran::findOrFail($id);
         $pembayaran->update($request->all());
 
-        return redirect()->route('pembayarans.index')->with('success', 'Pembayaran berhasil diperbarui.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Pembayaran berhasil diperbarui.',
+            'data' => $pembayaran
+        ], 200);
     }
 
     public function destroy($id)
@@ -64,6 +61,9 @@ class PembayaranController extends Controller
         $pembayaran = Pembayaran::findOrFail($id);
         $pembayaran->delete();
 
-        return redirect()->route('pembayarans.index')->with('success', 'Pembayaran berhasil dihapus.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Pembayaran berhasil dihapus.'
+        ], 200);
     }
 }

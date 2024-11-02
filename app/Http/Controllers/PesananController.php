@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class PesananController extends Controller
 {
+    public function index()
+    {
+            $pesanans = Pesanan::all();
+            return view('pesanans.index', compact('pesanans'));
+    }
     // Method untuk entry ke tabel pesanan
     public function createPesanan(Request $request)
     {
@@ -89,44 +94,6 @@ class PesananController extends Controller
         return response()->json($pesanan, 201);
     }
     {
-        public function index()
-        {
-            $pesanans = Pesanan::all();
-            return view('pesanans.index', compact('pesanans'));
-        }
-    
-        public function create()
-        {
-            return view('pesanans.create');
-        }
-    
-        public function store(Request $request)
-        {
-            $request->validate([
-                'id_keranjang' => 'required|integer',
-                'nomor_meja' => 'required|integer|max:999',
-                'waktu_pemesanan' => 'required|date',
-                'status_pesanan' => 'required|in:menunggu,diproses,selesai',
-                'total_pembayaran' => 'required|integer',
-            ]);
-    
-            Pesanan::create($request->all());
-    
-            return redirect()->route('pesanans.index')->with('success', 'Pesanan berhasil ditambahkan.');
-        }
-    
-        public function show($id)
-        {
-            $pesanan = Pesanan::findOrFail($id);
-            return view('pesanans.show', compact('pesanan'));
-        }
-    
-        public function edit($id)
-        {
-            $pesanan = Pesanan::findOrFail($id);
-            return view('pesanans.edit', compact('pesanan'));
-        }
-    
         public function update(Request $request, $id)
         {
             $request->validate([
@@ -140,7 +107,11 @@ class PesananController extends Controller
             $pesanan = Pesanan::findOrFail($id);
             $pesanan->update($request->all());
     
-            return redirect()->route('pesanans.index')->with('success', 'Pesanan berhasil diperbarui.');
+            return response()->json([
+                'success' => true,
+                'message' => 'Pesanan berhasil diperbarui.',
+                'data' => $pesanan
+            ], 200);
         }
     
         public function destroy($id)
@@ -148,7 +119,10 @@ class PesananController extends Controller
             $pesanan = Pesanan::findOrFail($id);
             $pesanan->delete();
     
-            return redirect()->route('pesanans.index')->with('success', 'Pesanan berhasil dihapus.');
+            return response()->json([
+                'success' => true,
+                'message' => 'Pesanan berhasil dihapus.'
+            ], 200);
         }
     }
 }

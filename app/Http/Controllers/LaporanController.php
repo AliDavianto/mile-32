@@ -12,7 +12,6 @@ class LaporanController extends Controller
         $laporans = Laporan::all();
         return view('laporans.index', compact('laporans'));
     }
-
     public function create()
     {
         return view('laporans.create');
@@ -21,47 +20,56 @@ class LaporanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal' => 'required|date',
-            'pendapatan' => 'required|integer',
-            'jumlah_transaksi' => 'required|integer',
+            'tanggal_pemasukan' => 'required|date',
+            'id_transaksi' => 'required|integer|exists:pembayarans,id_transaksi',
         ]);
 
-        Laporan::create($request->all());
+        $laporan = Laporan::create([
+            'tanggal_pemasukan' => $request->tanggal_pemasukan,
+            'id_transaksi' => $request->id_transaksi,
+        ]);
 
-        return redirect()->route('laporans.index')->with('success', 'Laporan berhasil ditambahkan.');
-    }
-
-    public function show($id)
-    {
-        $laporan = Laporan::findOrFail($id);
-        return view('laporans.show', compact('laporan'));
-    }
-
-    public function edit($id)
-    {
-        $laporan = Laporan::findOrFail($id);
-        return view('laporans.edit', compact('laporan'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Laporan berhasil ditambahkan.',
+            'data' => $laporan
+        ], 201);
     }
 
     public function update(Request $request, $id)
     {
+        $laporan = Laporan::findOrFail($id);
+
         $request->validate([
-            'tanggal' => 'required|date',
-            'pendapatan' => 'required|integer',
-            'jumlah_transaksi' => 'required|integer',
+            'tanggal_pemasukan' => 'required|date',
+            'id_transaksi' => 'required|integer|exists:pembayarans,id_transaksi',
         ]);
 
-        $laporan = Laporan::findOrFail($id);
-        $laporan->update($request->all());
+        $laporan->update([
+            'tanggal_pemasukan' => $request->tanggal_pemasukan,
+            'id_transaksi' => $request->id_transaksi,
+        ]);
 
-        return redirect()->route('laporans.index')->with('success', 'Laporan berhasil diperbarui.');
-    }
+        return response()->json([
+            'success' => true,
+            'message' => 'Laporan berhasil diperbarui.',
+            'data' => $laporan
+        ], 200);
 
-    public function destroy($id)
-    {
-        $laporan = Laporan::findOrFail($id);
-        $laporan->delete();
+        public function destroy($id)
+        {
+            $laporan = Laporan::findOrFail($id);
+            $laporan->delete();
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Laporan berhasil dihapus.'
+            ], 200);
+        }
 
-        return redirect()->route('laporans.index')->with('success', 'Laporan berhasil dihapus.');
-    }
+        public function cari($id)
+        {
+            //
+        }
+}
 }

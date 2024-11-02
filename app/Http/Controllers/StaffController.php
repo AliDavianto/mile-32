@@ -13,7 +13,6 @@ class StaffController extends Controller
         $stafs = User::where('jabatan', '!=', 'admin')->get();
         return view('stafs.index', compact('stafs'));
     }
-
     // Menampilkan form untuk menambahkan staf baru
     public function create()
     {
@@ -37,51 +36,49 @@ class StaffController extends Controller
             'jabatan' => $request->jabatan,
         ]);
 
-        return redirect()->route('stafs.index')->with('success', 'Staf berhasil ditambahkan.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Staf berhasil ditambahkan.',
+            'data' => $user
+        ], 201);
     }
+     // Memperbarui data staf
+     public function update(Request $request, $id)
+     {
+         $user = User::findOrFail($id);
+ 
+         $request->validate([
+             'nama' => 'required|string|max:30',
+             'email' => 'required|email|unique:users,email,' . $user->id_user,
+             'jabatan' => 'required|in:staff,kasir,manajer',
+         ]);
+ 
+         $user->update([
+             'nama' => $request->nama,
+             'email' => $request->email,
+             'jabatan' => $request->jabatan,
+         ]);
+ 
+         if ($request->password) {
+             $user->update(['password' => bcrypt($request->password)]);
+         }
+ 
+         return response()->json([
+             'success' => true,
+             'message' => 'Staf berhasil diperbarui.',
+             'data' => $user
+         ], 200);
+     }
 
-    // Menampilkan detail satu staf
-    public function show($id)
-    {
-        $staf = User::findOrFail($id);
-        return view('stafs.show', compact('staf'));
-    }
-
-    // Menampilkan form untuk mengedit staf yang ada
-    public function edit($id)
-    {
-        $staf = User::findOrFail($id);
-        return view('stafs.edit', compact('staf'));
-    }
-
-    // Memperbarui staf di database
-    public function update(Request $request, $id)
-    {
-        $staf = User::findOrFail($id);
-
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $staf->id_user,
-            'password' => 'nullable|string|min:8',
-            'jabatan' => 'required|in:staff,manajer,kasir',
-        ]);
-
-        $staf->update([
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : $staf->password,
-            'jabatan' => $request->jabatan,
-        ]);
-
-        return redirect()->route('stafs.index')->with('success', 'Staf berhasil diperbarui.');
-    }
-
-    // Menghapus staf dari database
-    public function destroy($id)
-    {
-        $staf = User::findOrFail($id);
-        $staf->delete();
-
-        return redirect()->route('stafs.index')->with('success', 'Staf berhasil dihapus.');
-    }
+      // Menghapus staf dari database
+      public function destroy($id)
+      {
+          $user = User::findOrFail($id);
+          $user->delete();
+  
+          return response()->json([
+              'success' => true,
+              'message' => 'Staf berhasil dihapus.'
+          ], 200);
+      }
 }
