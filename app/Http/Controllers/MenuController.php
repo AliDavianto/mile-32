@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File; // Import File
 use Illuminate\Support\Facades\Redis;
 use App\Models\Menu;
 
 class MenuController extends Controller
 {
+    // Method to list all menu items
     public function index()
-        {
-            $menus = Menu::all();
-            return view('menus.index', compact('menus'));
-        }
+    {
+        $menus = Menu::all();
+        return response()->json([
+            'success' => true,
+            'data' => $menus
+        ]);
+    }
+
     // Method to retrieve menu
     public function getMenu(Request $request)
     {
@@ -42,15 +48,15 @@ class MenuController extends Controller
             return [];
         }
     }
-    {
-        // Show form to create a new menu item
-        public function create()
+
+    // Show form to create a new menu item
+    public function create()
         {
             return view('menus.create');
         }
-    
-        // Store a new menu item
-        public function store(Request $request)
+
+    // Store a new menu item
+    public function store(Request $request)
     {
         $request->validate([
             'nama_produk' => 'required|string|max:50',
@@ -90,6 +96,7 @@ class MenuController extends Controller
             'data' => $menu
         ], 201);
     }
+
     public function update(Request $request, $id)
     {
         $menu = Menu::findOrFail($id);
@@ -138,7 +145,6 @@ class MenuController extends Controller
         ], 200);
     }
 
-    
     public function destroy($id)
     {
         $menu = Menu::findOrFail($id);
@@ -158,4 +164,3 @@ class MenuController extends Controller
     }
 }
 
-}
