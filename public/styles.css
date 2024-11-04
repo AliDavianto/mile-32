@@ -26,12 +26,14 @@
     color: #555; /* Warna teks deskripsi */
     margin: 0; /* Menghilangkan margin default */
 }
+
 /* Styles for the body */
 body {
     background-color: #F8F8F8; /* Mengubah warna latar belakang website */
     margin: 0; /* Menghilangkan margin default */
     padding: 0; /* Menghilangkan padding default */
 }
+
 /* Styles for the menu box */
 .menu-box {
     height: 110px;
@@ -74,6 +76,7 @@ body {
     justify-content: space-between; /* Memisahkan harga dan tombol */
     align-items: center; /* Menyelaraskan secara vertikal */
 }
+
 /* Style untuk harga */
 .price {
     font-family: 'Poppins', sans-serif; /* Font untuk harga */
@@ -81,6 +84,7 @@ body {
     font-weight: bold; /* Menebalkan font harga */
     margin: 0; /* Menghilangkan margin default */
 }
+
 /* Styles untuk tombol Add */
 .add-btn {
     background-color: #f0c040; /* Warna latar belakang tombol Add */
@@ -94,6 +98,7 @@ body {
 .add-btn:focus {
     outline: none; /* Menghapus outline saat tombol difokuskan */
 }
+
 /* Styles untuk kontrol jumlah */
 .quantity-controls {
     display: flex; /* Mengatur tombol + dan - serta jumlah dalam satu baris */
@@ -116,6 +121,7 @@ body {
     font-size: 14px; /* Ukuran font untuk jumlah */
     font-weight: bold; /* Menebalkan font jumlah */
 }
+
 /* CSS untuk Navbar Bawah */
 .bottom-navbar {
     display: flex; /* Menggunakan flexbox untuk tata letak horizontal */
@@ -147,6 +153,7 @@ body {
     color: #000000; /* Warna teks hitam */
     margin-top: 5px; /* Jarak antara ikon dan teks */
 }
+
 /* CSS untuk Tombol Checkout */
 .checkout-button {
     background-color: #FFD900; /* Warna latar belakang tombol */
@@ -156,3 +163,26 @@ body {
     cursor: pointer; /* Mengubah kursor saat hover */
     border-radius: 13px; /* Membuat sudut tombol melengkung */
 }
+
+.payment-method-section {
+    margin: 20px 0; /* Margin around the section */
+    padding: 10px; /* Padding inside the section */
+    background-color: #fff; /* Background color for the section */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+.payment-method-section h2 {
+    font-family: 'Poppins', sans-serif; /* Font for the title */
+    font-size: 1.5rem; /* Title font size */
+    margin-bottom: 10px; /* Space below the title */
+}
+
+.payment-method-select {
+    padding: 0.5rem; /* Padding inside the select box */
+    font-size: 1rem; /* Font size for the options */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* Border color */
+}
+
+
