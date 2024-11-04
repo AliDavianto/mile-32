@@ -1,0 +1,112 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align items */
+    justify-content: center; /* Center align items vertically */
+    height: auto; /* Full height of viewport */
+}
+
+.navbar {
+    background-color: #ffd900;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+    position: relative; /* Ensure navbar stays at top */
+    z-index: 1; /* Ensure navbar is on top of other content */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 50px; /* Adjust logo size as needed */
+    height: auto;
+    margin-right: 10px; /* Spacing between logo and text */
+}
+
+.logo-text h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.logo-text p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.login-logo {
+    width: 287px; /* Set width to 287px */
+    height: 287px; /* Set height to 287px */
+    margin: 20px 0; /* Add margin for spacing */
+}
+
+.title {
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align form */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 400px; /* Set form width */
+    margin: 0 auto; /* Center the form */
+}
+
+input[type="text"], input[type="file"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Full width */
+}
+
+.submit-btn {
+    background-color: #f0c040; /* Warna latar belakang tombol Add */
+    color: #fff; /* Warna teks tombol */
+    border: none; /* Menghapus border default */
+    padding: 5px 15px; /* Ruang dalam tombol */
+    font-size: 14px; /* Ukuran font untuk tombol */
+    border-radius: 5px; /* Radius sudut tombol */
+    cursor: pointer; /* Menampilkan pointer saat di-hover */
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .form-container {
+        width: 90%; /* Adjust width on smaller screens */
+    }
+    .navbar {
+        height: 60px; /* Smaller navbar on mobile */
+    }
+    .bottom-navbar {
+        padding: 5px 0; /* Less padding on mobile */
+    }
+    .login-logo {
+        width: 287px; /* Maintain size */
+        height: 287px; /* Maintain size */
+    }
+}
+
