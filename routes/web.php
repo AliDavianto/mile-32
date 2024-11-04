@@ -30,6 +30,18 @@ Route::get('/pendaftaran', function () {
 });
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
+// Dashboard Kasir Route
+Route::get('/dashboardkasir', function () {
+    return view('dashboard_kasir');
+});
+Route::post('/dashboardkasir', [AuthController::class, 'dashboardkasir'])->name('dashboardkasir');
+
+// Dashboard Staff Route
+Route::get('/dashboardstaff', function () {
+    return view('dashboard_staff');
+});
+Route::post('/dashboardstaff', [AuthController::class, 'dashboardstaff'])->name('dashboardstaff');
+
 // Logout Route
 Route::get('/logout', [AuthController::class, 'logout']);
 
