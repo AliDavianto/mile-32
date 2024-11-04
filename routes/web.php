@@ -55,3 +55,8 @@ Route::get('/sukses', function () {
 Route::get('/gagal', function () {
     return view('gagal');
 });
+
+// registmenu Route
+Route::get('/registmenu', function () {
+    return view('registmenu');
+});
