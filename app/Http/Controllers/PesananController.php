@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class PesananController extends Controller
 {
+    public function index()
+    {
+            $pesanans = Pesanan::all();
+            return view('pesanans.index', compact('pesanans'));
+    }
     // Method untuk entry ke tabel pesanan
     public function createPesanan(Request $request)
     {
@@ -87,5 +92,37 @@ class PesananController extends Controller
 
         // Kembalikan respons
         return response()->json($pesanan, 201);
+    }
+    {
+        public function update(Request $request, $id)
+        {
+            $request->validate([
+                'id_keranjang' => 'required|integer',
+                'nomor_meja' => 'required|integer|max:999',
+                'waktu_pemesanan' => 'required|date',
+                'status_pesanan' => 'required|in:menunggu,diproses,selesai',
+                'total_pembayaran' => 'required|integer',
+            ]);
+    
+            $pesanan = Pesanan::findOrFail($id);
+            $pesanan->update($request->all());
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Pesanan berhasil diperbarui.',
+                'data' => $pesanan
+            ], 200);
+        }
+    
+        public function destroy($id)
+        {
+            $pesanan = Pesanan::findOrFail($id);
+            $pesanan->delete();
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Pesanan berhasil dihapus.'
+            ], 200);
+        }
     }
 }
