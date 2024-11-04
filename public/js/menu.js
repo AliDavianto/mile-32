@@ -37,16 +37,11 @@ function updateQuantityDisplay(index, quantity) {
     decreaseBtns[index].disabled = quantity <= 0; // Disable decrease button if quantity is 0
 }
 
-// Initialize quantity displays from local storage
 function initializeQuantities() {
     menus.forEach((menu, index) => {
-        const existingOrderIndex = orderState.findIndex(order => order.id_menu === menu.id_menu);
-        if (existingOrderIndex >= 0) {
-            const quantity = orderState[existingOrderIndex].quantity;
-            updateQuantityDisplay(index, quantity);
-        } else {
-            updateQuantityDisplay(index, 0); // Set to 0 if not in orderState
-        }
+        const existingOrder = orderState.find(order => order.id_menu === menu.id_menu);
+        const quantity = existingOrder ? existingOrder.kuantitas : 0;
+        updateQuantityDisplay(index, quantity);
     });
 }
 
