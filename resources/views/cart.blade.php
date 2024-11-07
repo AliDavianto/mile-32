@@ -35,16 +35,19 @@
         <button id="checkout-btn" class="checkout-button">CHECKOUT</button>
 
         <!-- Payment Method Section -->
-            <section class="payment-method-section">
+        <section class="">
             <h2>Metode Pembayaran</h2>
-                <label for="payment-method">Pilih Metode:</label>
-                <select id="payment-method" class="payment-method-select">
-                    <option value="digital">Digital</option>
+            <label for="payment-method">Pilih Metode:</label>
+            <select id="payment-method" class="payment-method-select">
+                <option value="digital">Digital</option>
                 <option value="non-digital">Non Digital</option>
-                </select>
-            </section>
+            </select>
+        </section>
 
-
+        <form action="{{ route('pembayaran') }}" method="POST">
+            @csrf
+            <button type="submit">Bayar</button>
+        </form>
 
 
     </main>

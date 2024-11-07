@@ -72,3 +72,6 @@ Route::get('/gagal', function () {
 Route::get('/registmenu', function () {
     return view('registmenu');
 });
+
+
+Route::post('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');
