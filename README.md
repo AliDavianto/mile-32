@@ -129,7 +129,7 @@ docker compose up -d
 # Notes
 
 ### Laravel App
-- URL: http://localhost:8000
+- URL: http://localhost:8000/menu
 
 ### Mailpit
 - URL: http://localhost:8025
