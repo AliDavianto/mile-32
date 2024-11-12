@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login - Mile 32</title>
-    <link rel="stylesheet" href="login.css">
+    <title>Jabatan - Mile 32</title>
+    <link rel="stylesheet" href="jabatan.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 </head>
 
@@ -29,13 +29,10 @@
         
         <form action="{{ route('login') }}" method="POST">
             @csrf
-            <label for="email">EMAIL ADDRESS</label>
-            <input type="text" id="email" name="email" placeholder="Enter Your Email Address">
+            <label for="email">JABATAN</label>
+            <input type="text" id="email" name="email" placeholder="Masukan Jabatan">
             
-            <label for="password">PASSWORD</label>
-            <input type="password" id="password" name="password" placeholder="Enter Your Password">
-            
-            <button type="submit" class="update-btn">Login</button>
+            <button type="submit" class="update-btn">Kirim</button>
         </form>
         
     </div>

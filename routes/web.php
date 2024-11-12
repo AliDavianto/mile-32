@@ -42,6 +42,36 @@ Route::get('/dashboardstaff', function () {
 });
 Route::post('/dashboardstaff', [AuthController::class, 'dashboardstaff'])->name('dashboardstaff');
 
+// Dashboard Admin Staff
+Route::get('/adminstaff', function () {
+    return view('adminstaff');
+});
+Route::post('/adminstaff', [AuthController::class, 'adminstaff'])->name('adminstaff');
+
+// Update Staff
+Route::get('/updatestaff', function () {
+    return view('updatestaff');
+});
+Route::post('/updatestaff', [AuthController::class, 'updatestaff'])->name('updatestaff');
+
+// Jabatan
+Route::get('/jabatan', function () {
+    return view('jabatan');
+});
+Route::post('/jabatan', [AuthController::class, 'jabatan'])->name('jabatan');
+
+// Status
+Route::get('/status', function () {
+    return view('status');
+});
+Route::post('/status', [AuthController::class, 'status'])->name('status');
+
+// Kategori
+Route::get('/kategori', function () {
+    return view('kategori');
+});
+Route::post('/kategori', [AuthController::class, 'kategori'])->name('kategori');
+
 // Logout Route
 Route::get('/logout', [AuthController::class, 'logout']);
 
