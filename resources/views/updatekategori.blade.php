@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login - Mile 32</title>
-    <link rel="stylesheet" href="login.css">
+    <title>Update Kategori - Mile 32</title>
+    <link rel="stylesheet" href="updatekategori.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 </head>
 
@@ -25,17 +25,14 @@
     <!-- Form Section -->
     <div class="form-container">
         <img src="loginlogo.jpg" alt="Illustration">
-        <h2>WELCOME TO MILE 32</h2>
+        <h2>UPDATE KATEGORI</h2>
         
         <form action="{{ route('login') }}" method="POST">
             @csrf
-            <label for="email">EMAIL ADDRESS</label>
-            <input type="text" id="email" name="email" placeholder="Enter Your Email Address">
+            <label for="email">Kategori</label>
+            <input type="text" id="email" name="email" placeholder="Update Kategori">
             
-            <label for="password">PASSWORD</label>
-            <input type="password" id="password" name="password" placeholder="Enter Your Password">
-            
-            <button type="submit" class="update-btn">Login</button>
+            <button type="submit" class="update-btn">Update</button>
         </form>
         
     </div>

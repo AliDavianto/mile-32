@@ -30,6 +30,72 @@ Route::get('/pendaftaran', function () {
 });
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
+// Dashboard Kasir Route
+Route::get('/dashboardkasir', function () {
+    return view('dashboard_kasir');
+});
+Route::post('/dashboardkasir', [AuthController::class, 'dashboardkasir'])->name('dashboardkasir');
+
+// Dashboard Staff Route
+Route::get('/dashboardstaff', function () {
+    return view('dashboard_staff');
+});
+Route::post('/dashboardstaff', [AuthController::class, 'dashboardstaff'])->name('dashboardstaff');
+
+// Dashboard Admin Staff
+Route::get('/adminstaff', function () {
+    return view('adminstaff');
+});
+Route::post('/adminstaff', [AuthController::class, 'adminstaff'])->name('adminstaff');
+
+// Update Staff
+Route::get('/updatestaff', function () {
+    return view('updatestaff');
+});
+Route::post('/updatestaff', [AuthController::class, 'updatestaff'])->name('updatestaff');
+
+// Dashboard Admin Jabatan
+Route::get('/adminjabatan', function () {
+    return view('adminjabatan');
+});
+Route::post('/adminjabatan', [AuthController::class, 'adminjabatan'])->name('adminjabatan');
+
+// Create Jabatan
+Route::get('/jabatan', function () {
+    return view('jabatan');
+});
+Route::post('/jabatan', [AuthController::class, 'jabatan'])->name('jabatan');
+
+// Update Jabatan
+Route::get('/updatejabatan', function () {
+    return view('updatejabatan');
+});
+Route::post('/updatejabatan', [AuthController::class, 'updatejabatan'])->name('updatejabatan');
+
+// Status
+Route::get('/status', function () {
+    return view('status');
+});
+Route::post('/status', [AuthController::class, 'status'])->name('status');
+
+// Dashboard Admin Kategori
+Route::get('/adminkategori', function () {
+    return view('adminkategori');
+});
+Route::post('/adminkategori', [AuthController::class, 'adminkategori'])->name('adminkategori');
+
+// Create Kategori
+Route::get('/kategori', function () {
+    return view('kategori');
+});
+Route::post('/kategori', [AuthController::class, 'kategori'])->name('kategori');
+
+// Update Jabatan
+Route::get('/updatekategori', function () {
+    return view('updatekategori');
+});
+Route::post('/updatekategori', [AuthController::class, 'updatekategori'])->name('updatekategori');
+
 // Logout Route
 Route::get('/logout', [AuthController::class, 'logout']);
 
@@ -55,3 +121,11 @@ Route::get('/sukses', function () {
 Route::get('/gagal', function () {
     return view('gagal');
 });
+
+// registmenu Route
+Route::get('/registmenu', function () {
+    return view('registmenu');
+});
+
+
+Route::post('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');

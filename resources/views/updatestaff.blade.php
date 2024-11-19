@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Pendaftaran - Mile 32</title>
-    <link rel="stylesheet" href="login.css">
+    <title>Update Staff - Mile 32</title>
+    <link rel="stylesheet" href="updatestaff.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 </head>
 
@@ -25,7 +25,7 @@
     <!-- Form Section -->
     <div class="form-container">
         <img src="loginlogo.jpg" alt="Illustration">
-        <h2>DAFTARKAN STAFF BARU</h2>
+        <h2>UPDATE STAFF</h2>
 
         <form action="{{ route('register') }}" method="POST">
             @csrf
@@ -67,7 +67,7 @@
                 <span class="error-message">{{ $message }}</span>
             @enderror
 
-            <button type="submit" class="update-btn">Daftar</button>
+            <button type="submit" class="update-btn">Update</button>
         </form>
 
     </div>
