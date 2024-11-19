@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Staff</title>
-    <link rel="stylesheet" href="adminstaff.css">
+    <title>Admin Dashboard - Jabatan</title>
+    <link rel="stylesheet" href="adminjabatan.css">
     <!-- Menambahkan Font Awesome CDN untuk ikon kaca pembesar -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
@@ -36,13 +36,13 @@
 
     <div class="main-content">
         <div class="header">
-            <h3>Data Staff</h3>
+            <h3>Data Jabatan</h3>
             <div class="header-actions">
                 <!-- Menambahkan ikon kaca pembesar di sini -->
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" placeholder="Search" class="search-box">
                 <!-- Tombol "Tambah" mengarah ke route pendaftaran -->
-                <a href="{{ url('/pendaftaran') }}">
+                <a href="{{ url('/jabatan') }}">
                     <button class="add-button">Tambah</button>
                 </a>
             </div>
@@ -52,20 +52,18 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nama</th>
+                        <th>ID Jabatan</th>
                         <th>Jabatan</th>
-                        <th>Email</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @for ($i = 0; $i < 8; $i++)
                         <tr>
-                            <td>Jane Cooper</td>
+                            <td>1111</td>
                             <td>{{ $i < 2 ? 'Kasir' : 'Staff Dapur' }}</td>
-                            <td>mile32ajah@gmail.com</td>
                             <td>
-                                <a href="{{ url('/updatestaff') }}">
+                                <a href="{{ url('/updatejabatan') }}">
                                     <button class="edit-button">Edit</button>
                                 </a>
                                 <button class="delete-button">Hapus</button>

@@ -25,7 +25,7 @@
     <!-- Form Section -->
     <div class="form-container">
         <img src="loginlogo.jpg" alt="Illustration">
-        <h2>WELCOME TO MILE 32</h2>
+        <h2>DAFTARKAN JABATAN BARU</h2>
         
         <form action="{{ route('login') }}" method="POST">
             @csrf
