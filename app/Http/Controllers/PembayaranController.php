@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pembayaran;
+use App\Models\Pesanan;
+use App\Models\DetailPesanan;
 
 class PembayaranController extends Controller
 {
@@ -66,4 +68,97 @@ class PembayaranController extends Controller
             'message' => 'Pembayaran berhasil dihapus.'
         ], 200);
     }
+    public function getPesananNonDigital()
+    {
+        // Langkah 1: Ambil semua id_pesanan di tabel Pembayarans dengan metode_pembayaran = "non-digital" dan status_pembayaran = "menunggu"
+        $listIdPesananNonDigital = Pembayaran::where('metode_pembayaran', 'non-digital')
+            ->where('status_pembayaran', 'menunggu')
+            ->pluck('id_pesanan')
+            ->toArray();
+
+        // Langkah 2: Ambil data pesanan dan detail pesanan yang sesuai dengan listIdPesananNonDigital
+        $pesananData = Pesanan::with(['detailPesanan.menu'])
+            ->whereIn('id_pesanan', $listIdPesananNonDigital)
+            ->get()
+            ->map(function ($pesanan) {
+                return [
+                    'id_pesanan' => $pesanan->id_pesanan,
+                    'nomor_meja' => $pesanan->nomor_meja,
+                    'total_harga' => $pesanan->total_pembayaran,
+                    'pesanan' => $pesanan->detailPesanan->map(function ($detail) {
+                        return [
+                            'produk' => $detail->menu->nama_produk,
+                            'kuantitas' => $detail->kuantitas,
+                            'harga' => $detail->harga,
+                        ];
+                    }),
+                ];
+            });
+
+        // Langkah 3: Kembalikan data dalam bentuk JSON
+        return response()->json($pesananData);
+    }
+
+     // Method untuk konfirmasi pesanan
+     public function konfirmasiPesanan(Request $request, $id_pesanan)
+     {
+         $request->validate([
+             'status_pembayaran' => 'required|in:berhasil,gagal',
+             'status_pesanan' => 'required|in:berhasil,gagal,menunggu',
+         ]);
+ 
+         // Cari pesanan berdasarkan id_pesanan
+         $pesanan = Pesanan::findOrFail($id_pesanan);
+ 
+         // Perbarui status pembayaran dan pesanan
+         $pesanan->pembayaran->update([
+             'status_pembayaran' => $request->status_pembayaran,
+         ]);
+         $pesanan->update([
+             'status_pesanan' => $request->status_pesanan,
+         ]);
+ 
+         return response()->json([
+             'message' => 'Status pembayaran dan pesanan berhasil diperbarui',
+             'status_pembayaran' => $pesanan->pembayaran->status_pembayaran,
+             'status_pesanan' => $pesanan->status_pesanan,
+         ]);
+     }
+
+     public function batalPesanan(Request $request, $id_pesanan)
+{
+    try {
+        // Cari pesanan berdasarkan id_pesanan
+        $pesanan = Pesanan::findOrFail($id_pesanan);
+
+        // Periksa apakah pesanan memiliki pembayaran terkait
+        $pembayaran = $pesanan->pembayaran;
+
+        if (!$pembayaran) {
+            return response()->json([
+                'message' => 'Pembayaran terkait tidak ditemukan untuk pesanan ini.'
+            ], 404);
+        }
+
+        // Perbarui status pembayaran dan status pesanan
+        $pembayaran->update([
+            'status_pembayaran' => 'gagal', // Atau status lain yang menunjukkan pembatalan
+        ]);
+        $pesanan->update([
+            'status_pesanan' => 'gagal', // Atau status lain yang sesuai
+        ]);
+
+        return response()->json([
+            'message' => 'Pesanan berhasil dibatalkan.',
+            'id_pesanan' => $pesanan->id_pesanan,
+            'status_pesanan' => $pesanan->status_pesanan,
+            'status_pembayaran' => $pembayaran->status_pembayaran,
+        ], 200);
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => 'Terjadi kesalahan saat membatalkan pesanan.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
 }

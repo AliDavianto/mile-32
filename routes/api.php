@@ -9,5 +9,10 @@ Route::middleware('auth:sanctum')->group(function () {
         return auth()->user();
     });
 
+// Route untuk pemmbayaran non digital    
+Route::get('/kasir/pesanan-non-digital', [PembayaranController::class, 'getPesananNonDigital']);
+
+// Route untuk konfirmasi kasir
+Route::post('/kasir/konfirmasi-pesanan/{id_pesanan}', [KasirController::class, 'konfirmasiPesanan']);
     // Tambahkan route yang ingin dilindungi di sini
 });
