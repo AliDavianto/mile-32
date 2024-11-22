@@ -1,6 +1,6 @@
 /* CSS untuk Navbar */
 .navbar {
-    background-color: #FFD900; /* Warna kuning */
+    background-color: #ffd900; /* Warna kuning */
     padding: 15px; /* Jarak dalam yang lebih besar */
     display: flex; /* Menggunakan flexbox untuk tata letak */
     align-items: center; /* Perataan vertikal */
@@ -29,7 +29,7 @@
 
 /* Styles for the body */
 body {
-    background-color: #F8F8F8; /* Mengubah warna latar belakang website */
+    background-color: #f8f8f8; /* Mengubah warna latar belakang website */
     margin: 0; /* Menghilangkan margin default */
     padding: 0; /* Menghilangkan padding default */
 }
@@ -39,7 +39,7 @@ body {
     height: 110px;
     width: 310px; /* Lebar kotak menu */
     background-color: #ffffff; /* Warna latar belakang kotak menu */
-    border: 2px solid #F2F2F2; /* Warna dan tebal border */
+    border: 2px solid #f2f2f2; /* Warna dan tebal border */
     margin: 50px auto; /* Margin otomatis untuk pusat */
     display: flex; /* Menggunakan flexbox untuk tata letak */
     align-items: center; /* Menyelaraskan item secara vertikal di tengah */
@@ -156,7 +156,7 @@ body {
 
 /* CSS untuk Tombol Checkout */
 .checkout-button {
-    background-color: #FFD900; /* Warna latar belakang tombol */
+    background-color: #ffd900; /* Warna latar belakang tombol */
     font-weight: bold; /* Membuat teks menjadi tebal */
     border: none; /* Menghilangkan border tombol */
     padding: 10px 20px; /* Memberi ruang di dalam tombol */
@@ -164,25 +164,108 @@ body {
     border-radius: 13px; /* Membuat sudut tombol melengkung */
 }
 
-.payment-method-section {
-    margin: 20px 0; /* Margin around the section */
-    padding: 10px; /* Padding inside the section */
-    background-color: #fff; /* Background color for the section */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow effect */
+.menu-section {
+    width: 310px;
+    margin: 0 auto;
+    display: flex; /* Make the menu-section a flex container */
+    flex-direction: column; /* Initially, items will stack vertically */
+    align-items: center; /* Center items vertically */
 }
 
-.payment-method-section h2 {
-    font-family: 'Poppins', sans-serif; /* Font for the title */
-    font-size: 1.5rem; /* Title font size */
-    margin-bottom: 10px; /* Space below the title */
+.payment-container {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 290px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.payment-method-select {
-    padding: 0.5rem; /* Padding inside the select box */
-    font-size: 1rem; /* Font size for the options */
-    border-radius: 5px; /* Rounded corners */
-    border: 1px solid #ccc; /* Border color */
+.payment-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif; /* Apply Poppins font */
 }
 
+.payment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: 'Poppins', sans-serif; /* Apply Poppins font */
+}
 
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.total-amount {
+    font-weight: bold;
+    color: #333;
+    font-family: 'Poppins', sans-serif; /* Apply Poppins font */
+}
+
+.select-container {
+    position: relative;
+    display: inline-block;
+    width: 130px;
+}
+.styled-dropdown {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: #fff;
+    cursor: pointer;
+    appearance: none; /* Remove default browser arrow */
+}
+.styled-dropdown:focus {
+    outline: none;
+    border-color: #4caf50; /* Highlight color */
+}
+
+.select-container::after {
+    content: '▼'; /* Add a dropdown arrow */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 1rem;
+    color: #888;
+}
+#payment-method {
+    appearance: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif; /* Apply Poppins font */
+}
+
+#payment-method:focus {
+    outline: none;
+    border-color: #333;
+}
+
+.checkout-button {
+    background: #ffeb3b;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.3s;
+}
+
+.checkout-button:hover {
+    background: #ffd600;
+}

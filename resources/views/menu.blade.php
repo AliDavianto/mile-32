@@ -47,7 +47,7 @@
     </main>
 
     <!-- Clear Local Storage Button -->
-    <button id="clear-storage-btn">Clear Local Storage</button>
+    {{-- <button id="clear-storage-btn">Clear Local Storage</button> --}}
 
     <!-- Bottom Navbar -->
     <footer class="bottom-navbar">

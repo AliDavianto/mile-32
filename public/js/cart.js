@@ -5,20 +5,17 @@ let totalHarga = JSON.parse(localStorage.getItem('total_harga'));
 // Function to render cart items
 function renderCartItems() {
     const cartContainer = document.getElementById('cart-items');
-    const totalPriceDisplay = document.getElementById('total-price');
-
-    // Clear previous cart items
-    cartContainer.innerHTML = '';
+    const totalPriceDisplay = document.getElementById('total-amount'); // Ensure correct ID
+    cartContainer.innerHTML = ''; // Clear previous items
 
     let totalHarga = 0;
 
-    // Check if orderState is empty
     if (orderState.length === 0) {
         cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+        totalPriceDisplay.textContent = 'Rp0'; // Reset total price
         return;
     }
 
-    // Filter menus to find matching cart items
     orderState.forEach(order => {
         const menuItem = menus.find(menu => menu.id_menu === order.id_menu);
         if (menuItem) {
@@ -44,7 +41,8 @@ function renderCartItems() {
         }
     });
 
-    totalPriceDisplay.innerHTML = `<h3>Total Price: Rp ${totalHarga.toLocaleString('id-ID')}</h3>`;
+    // Update the total price in the view
+    totalPriceDisplay.textContent = `Rp ${totalHarga.toLocaleString('id-ID')}`;
 }
 
 // Call the function to render cart items

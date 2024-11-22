@@ -28,32 +28,29 @@
         <div id="cart-items" class="cart-items-container">
             <!-- Cart items will be populated here by JavaScript -->
         </div>
-        <div id="total-price" class="total-price">
-            <!-- Total price will be populated here by JavaScript -->
-        </div>
-
-        <button id="checkout-btn" class="checkout-button">CHECKOUT</button>
-
-        <!-- Payment Method Section -->
-        <section class="">
-            <h2>Metode Pembayaran</h2>
-            <label for="payment-method">Pilih Metode:</label>
-            <select id="payment-method" class="payment-method-select">
-                <option value="digital">Digital</option>
-                <option value="non-digital">Non Digital</option>
-            </select>
-        </section>
-
-        <form action="{{ route('pembayaran') }}" method="POST">
-            @csrf
-            <button type="submit">Bayar</button>
-        </form>
-
-
+        <div class="payment-container">
+            <h2 class="payment-title">Detail Pembayaran</h2>
+            <div class="payment-details">
+              <div class="payment-row">
+                <span>Total</span>
+                <span id="total-amount">Rp0</span> <!-- Use an ID for dynamic updates -->
+              </div>
+              <div class="payment-row">
+                <label for="payment-method">Metode Pembayaran</label>
+                <div class="select-container">
+                  <select id="payment-method" class="styled-dropdown">
+                    <option value="1">QRIS</option>
+                    <option value="2">Cash</option>
+                  </select>
+                </div>
+              </div>
+              <button class="checkout-button">CHECKOUT</button>
+            </div>
+          </div>
     </main>
 
     <!-- Clear Local Storage Button -->
-    <button id="clear-storage-btn">Clear Local Storage</button>
+    {{-- <button id="clear-storage-btn">Clear Local Storage</button> --}}
 
     <!-- Bottom Navbar -->
     <footer class="bottom-navbar">
