@@ -11,7 +11,11 @@ class Menu extends Model
 
     protected $table = 'menu'; 
     protected $primaryKey = 'id_menu'; 
+    protected $casts = [
+        'id_menu' => 'string',
+    ];
     protected $fillable = [
+        'id_menu',
         'nama_produk',
         'deskripsi',
         'harga',

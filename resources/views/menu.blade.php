@@ -71,7 +71,7 @@
     </script>
 
     <!-- External JavaScript -->
-    <script src="{{ asset('js/menu.js') }}"></script>
+    <script src="{{ asset('js/menu.js') }}?v={{ time() }}"></script>
 </body>
 
 </html>

@@ -9,8 +9,12 @@ class Pembayaran extends Model
 {
     use HasFactory;
     protected $table = 'pembayaran'; 
-    protected $primaryKey = 'id_transaksi'; 
+    protected $primaryKey = 'id_pembayaran'; 
+    protected $casts = [
+        'id_pembayaran' => 'string',
+    ];
     protected $fillable = [
+        'id_pembayaran',
         'id_pesanan',
         'metode_pembayaran',
         'total_pembayaran',
