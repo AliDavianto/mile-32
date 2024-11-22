@@ -42,7 +42,7 @@
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" placeholder="Search" class="search-box">
                 <!-- Tombol "Tambah" mengarah ke route pendaftaran -->
-                <a href="{{ url('/jabatan') }}">
+                <a href="{{ url('/jabatan/create') }}">
                     <button class="add-button">Tambah</button>
                 </a>
             </div>
@@ -58,21 +58,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 0; $i < 8; $i++)
-                        <tr>
-                            <td>1111</td>
-                            <td>{{ $i < 2 ? 'Kasir' : 'Staff Dapur' }}</td>
-                            <td>
-                                <a href="{{ url('/updatejabatan') }}">
-                                    <button class="edit-button">Edit</button>
-                                </a>
-                                <button class="delete-button">Hapus</button>
-                            </td>
-                        </tr>
-                    @endfor
+                    @forelse ($jabatan as $k)
+                    <tr>
+                        <td>{{ $k->id_jabatan }}</td>
+                        <td>{{ $k->jabatan }}</td>
+                        <td>
+                            <!-- Edit Button -->
+                            <a href="{{ route('editjabatan', $k->id_jabatan) }}" class="edit-button">Edit</a>
+
+                            <!-- Delete Form -->
+                            <form action="{{ route('destroyjabatan', $k->id_jabatan) }}" method="POST"
+                                style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="delete-button"
+                                    onclick="return confirm('Yakin ingin menghapus jabatan ini?')">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3">Tidak ada data jabatan ditemukan.</td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
-            <div class="pagination">
+            {{-- <div class="pagination">
                 <span>Showing data 1 to 8 of 256K entries</span>
                 <div class="page-numbers">
                     <button class="page-arrow">&larr;</button> <!-- Left Arrow (Previous) -->
@@ -84,7 +95,7 @@
                     <button>40</button>
                     <button class="page-arrow">&rarr;</button> <!-- Right Arrow (Next) -->
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </body>

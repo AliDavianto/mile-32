@@ -24,8 +24,8 @@
         <li class="{{ request()->is('adminkategori') ? 'active' : '' }}">
             <a href="{{ url('/adminkategori') }}"><i class="icon">📋</i> Kategori</a>
         </li>
-        <li class="{{ request()->is('adminjabatan') ? 'active' : '' }}">
-            <a href="{{ url('/adminjabatan') }}"><i class="icon">📋</i> Jabatan</a>
+        <li class="{{ request()->is('adminstaff') ? 'active' : '' }}">
+            <a href="{{ url('/adminstaff') }}"><i class="icon">📋</i> staff</a>
         </li>
         <li class="{{ request()->is('adminstatus') ? 'active' : '' }}">
             <a href="{{ url('/adminstatus') }}"><i class="icon">📋</i> Status</a>
@@ -42,7 +42,7 @@
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" placeholder="Search" class="search-box">
                 <!-- Tombol "Tambah" mengarah ke route pendaftaran -->
-                <a href="{{ url('/pendaftaran') }}">
+                <a href="{{ url('/staff/create') }}">
                     <button class="add-button">Tambah</button>
                 </a>
             </div>
@@ -59,22 +59,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 0; $i < 8; $i++)
-                        <tr>
-                            <td>Jane Cooper</td>
-                            <td>{{ $i < 2 ? 'Kasir' : 'Staff Dapur' }}</td>
-                            <td>mile32ajah@gmail.com</td>
-                            <td>
-                                <a href="{{ url('/updatestaff') }}">
-                                    <button class="edit-button">Edit</button>
-                                </a>
-                                <button class="delete-button">Hapus</button>
-                            </td>
-                        </tr>
-                    @endfor
+                    @forelse ($staff as $k)
+                    <tr>
+                        <td>{{ $k->nama }}</td>
+                        <td>{{ $k->jabatan->jabatan }}</td>
+                        <td>{{ $k->email }}</td>
+                        <td>
+                            <!-- Edit Button -->
+                            <a href="{{ route('editstaff', $k->id_user) }}" class="edit-button">Edit</a>
+
+                            <!-- Delete Form -->
+                            <form action="{{ route('destroystaff', $k->id_user) }}" method="POST"
+                                style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="delete-button"
+                                    onclick="return confirm('Yakin ingin menghapus staff ini?')">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3">Tidak ada data staff ditemukan.</td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
-            <div class="pagination">
+            {{-- <div class="pagination">
                 <span>Showing data 1 to 8 of 256K entries</span>
                 <div class="page-numbers">
                     <button class="page-arrow">&larr;</button> <!-- Left Arrow (Previous) -->
@@ -86,7 +97,7 @@
                     <button>40</button>
                     <button class="page-arrow">&rarr;</button> <!-- Right Arrow (Next) -->
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </body>

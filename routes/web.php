@@ -8,124 +8,66 @@ use App\Http\Controllers\StafController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\StaffController;
 
-// Controller Routes
+// Public Routes
 Route::get('/menu', [MenuController::class, 'getMenu']);
-
-// Post cart data (POST request for data submission)
 Route::get('/cart', [MenuController::class, 'getMenuCart']);
-
-// Checkout route
 Route::post('/checkout', [PesananController::class, 'checkout']);
-
-// Login Route
-Route::get('/login', function () {
-    return view('login');
-});
-Route::post('/login', [AuthController::class, 'login'])->name('login'); // Post route for login
-
-// Register Route
-Route::get('/pendaftaran', function () {
-    return view('register');
-});
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-
-// Dashboard Kasir Route
-Route::get('/dashboardkasir', function () {
-    return view('dashboard_kasir');
-});
-Route::post('/dashboardkasir', [AuthController::class, 'dashboardkasir'])->name('dashboardkasir');
-
-// Dashboard Staff Route
-Route::get('/dashboardstaff', function () {
-    return view('dashboard_staff');
-});
-Route::post('/dashboardstaff', [AuthController::class, 'dashboardstaff'])->name('dashboardstaff');
-
-// Dashboard Admin Staff
-Route::get('/adminstaff', function () {
-    return view('adminstaff');
-});
-Route::post('/adminstaff', [AuthController::class, 'adminstaff'])->name('adminstaff');
-
-// Update Staff
-Route::get('/updatestaff', function () {
-    return view('updatestaff');
-});
-Route::post('/updatestaff', [AuthController::class, 'updatestaff'])->name('updatestaff');
-
-// Dashboard Admin Jabatan
-Route::get('/adminjabatan', function () {
-    return view('adminjabatan');
-});
-Route::post('/adminjabatan', [AuthController::class, 'adminjabatan'])->name('adminjabatan');
-
-// Create Jabatan
-Route::get('/jabatan', function () {
-    return view('jabatan');
-});
-Route::post('/jabatan', [AuthController::class, 'jabatan'])->name('jabatan');
-
-// Update Jabatan
-Route::get('/updatejabatan', function () {
-    return view('updatejabatan');
-});
-Route::post('/updatejabatan', [AuthController::class, 'updatejabatan'])->name('updatejabatan');
-
-// Status
-Route::get('/status', function () {
-    return view('status');
-});
-Route::post('/status', [AuthController::class, 'status'])->name('status');
-
-// Dashboard Admin Kategori
-Route::get('/adminkategori', function () {
-    return view('adminkategori');
-});
-Route::post('/adminkategori', [AuthController::class, 'adminkategori'])->name('adminkategori');
-
-// Create Kategori
-Route::get('/kategori', function () {
-    return view('kategori');
-});
-Route::post('/kategori', [AuthController::class, 'kategori'])->name('kategori');
-
-// Update Jabatan
-Route::get('/updatekategori', function () {
-    return view('updatekategori');
-});
-Route::post('/updatekategori', [AuthController::class, 'updatekategori'])->name('updatekategori');
-
-// Logout Route
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/sukses', function () { return view('sukses'); });
+Route::get('/gagal', function () { return view('gagal'); });
+Route::post('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');
 Route::get('/logout', [AuthController::class, 'logout']);
 
-// Protected routes based on role
-Route::get('/dashboard-kasir', [PesananController::class, 'index']);
-Route::get('/dashboard-staff', [PesananController::class, 'index']);
-Route::get('/laporan', [LaporanController::class, 'index']);
+// Staff Routes
+Route::get('/dashboardkasir', function () { return view('dashboard_kasir'); });
+Route::post('/dashboardkasir', [AuthController::class, 'dashboardkasir'])->name('dashboardkasir');
+Route::get('/dashboardstaff', function () { return view('dashboard_staff'); });
+Route::post('/dashboardstaff', [AuthController::class, 'dashboardstaff'])->name('dashboardstaff');
 
-//Route CRUD from all Models
+// Admin Routes
+
+//Admin Staff
+Route::get('/adminstaff', [StaffController::class, 'index'])->name('adminstaff');
+Route::get('/staff/create', [StaffController::class, 'create']);
+Route::post('/staff/create', [StaffController::class, 'store'])->name('storestaff');
+Route::get('/staff/update/{id}', [StaffController::class, 'edit'])->name('editstaff');
+Route::post('/staff/update/{id}', [StaffController::class, 'update'])->name('changestaff');
+Route::delete('/staff/delete/{id}', [StaffController::class, 'destroy'])->name('destroystaff');
+
+//Admin Jabatan
+Route::get('/adminjabatan', [JabatanController::class, 'index'])->name('adminjabatan');
+Route::get('/jabatan/create', function () { return view('jabatan'); });
+Route::post('/jabatan/create', [JabatanController::class, 'store'])->name('storejabatan');
+Route::get('/jabatan/update/{id}', [JabatanController::class, 'edit'])->name('editjabatan');
+Route::post('/jabatan/update/{id}', [JabatanController::class, 'update'])->name('changejabatan');
+Route::delete('/jabatan/delete/{id}', [JabatanController::class, 'destroy'])->name('destroyjabatan');
+
+//Admin Status
+Route::get('/adminstatus', [StatusController::class, 'index'])->name('adminstatus');
+Route::get('/status/create', function () { return view('status'); });
+Route::post('/status/create', [StatusController::class, 'store'])->name('storestatus');
+Route::get('/status/update/{id}', [StatusController::class, 'edit'])->name('editstatus');
+Route::post('/status/update/{id}', [StatusController::class, 'update'])->name('changestatus');
+Route::delete('/status/delete/{id}', [StatusController::class, 'destroy'])->name('destroystatus');
+
+// Admin kategori
+Route::get('/adminkategori', [KategoriController::class, 'index'])->name('adminkategori');
+Route::get('/kategori/create', function () { return view('kategori'); });
+Route::post('/kategori/create', [KategoriController::class, 'store'])->name('storekategori');
+Route::get('/kategori/update/{id}', [KategoriController::class, 'edit'])->name('editkategori');
+Route::post('/kategori/update/{id}', [KategoriController::class, 'update'])->name('changekategori');
+Route::delete('/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('destroykategori');
+
+// Resource Routes
 Route::resource('menus', MenuController::class);
 Route::resource('pesanans', PesananController::class);
 Route::resource('detail_pesanans', DetailPesananController::class);
 Route::resource('stafs', StafController::class);
 Route::resource('pembayarans', PembayaranController::class);
 Route::resource('laporans', LaporanController::class);
-// sukses Route
-Route::get('/sukses', function () {
-    return view('sukses');
-});
-
-
-// gagal Route
-Route::get('/gagal', function () {
-    return view('gagal');
-});
-
-// registmenu Route
-Route::get('/registmenu', function () {
-    return view('registmenu');
-});
-
-
-Route::post('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');

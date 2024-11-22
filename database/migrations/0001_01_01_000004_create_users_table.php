@@ -11,22 +11,31 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Create the 'users' table
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id_user')->length(5); 
-            $table->string('nama', 30); 
-            $table->enum('jabatan', ['admin', 'staff', 'manajer', 'kasir']);
+            $table->string('id_user', 3)->primary(); // Adjust length as needed
+            $table->string('nama', 30);
+            $table->unsignedBigInteger('id_jabatan'); // Must match the type of 'id_jabatan' in 'jabatan'
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            // Foreign key constraint
+            $table->foreign('id_jabatan')
+                ->references('id_jabatan')
+                ->on('jabatan')
+                ->onDelete('cascade'); // Cascade delete on related users
         });
 
+        // Password reset tokens table
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
+        // Sessions table
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
@@ -42,8 +51,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('jabatan'); // Drop the 'jabatan' table last
     }
 };
