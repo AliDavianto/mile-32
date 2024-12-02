@@ -59,11 +59,11 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'id_menu' => 'required|string|max:4',
             'nama_produk' => 'required|string|max:50',
             'deskripsi' => 'nullable|string',
             'harga' => 'required|integer|min:0',
-            'kategori' => 'required|in:Makanan,Minuman,add on',
-            'diskon' => 'nullable|integer|min:0|max:100',
+            'id_kategori' => 'required|in:Makanan,Minuman,add on',
             'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048' // Validasi gambar
         ]);
 
@@ -82,11 +82,11 @@ class MenuController extends Controller
 
         // Menyimpan item menu baru ke database
         $menu = Menu::create([
+            'id_menu' => $request->id_menu,
             'nama_produk' => $request->nama_produk,
             'deskripsi' => $request->deskripsi,
             'harga' => $request->harga,
-            'kategori' => $request->kategori,
-            'diskon' => $request->diskon,
+            'id_kategori' => $request->id_kategori,
             'gambar' => $gambarPath // Menyimpan path gambar
         ]);
 

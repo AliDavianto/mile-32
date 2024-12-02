@@ -39,66 +39,104 @@ class PembayaranController extends Controller
         ], 201);
     }
 
-    public function pembayaran(Request $request)
+
+    public function pembayaran(Request $id_pesanan)
     {
-        $request->validate([
-            'id_pesanan' => 'required|integer',
-            'metode_pembayaran' => 'required|in:Digital,Non-Digital',
-            'total_pembayaran' => 'required|integer',
-            'status_pembayaran' => 'required|in:berhasil,gagal,menunggu',
-            'waktu_transaksi' => 'required|date',
-            'produk' => 'required|array',
-            'produk.*.harga' => 'required|integer',
-            'produk.*.jumlah' => 'required|integer',
-            'produk.*.nama_produk' => 'required|string',
-            
-        ]);
+        // Query the Pesanan model with related data
+        // Find the latest Pesanan record
+        $pesanan = Pesanan::with(['pembayaran', 'detailPesanan'])
+            ->latest('id_pesanan') // Order by `id_pesanan` descending
+            ->firstOrFail();       // Get the latest Pesanan or fail if not found
+        $idPesananLatest = Pesanan::latest('id_pesanan')->value('id_pesanan');
 
-        $pembayaran = Pembayaran::create($request->all());
-
-        if ($request->metode_pembayaran == 'Digital') {
-
-            $itemDetails = array_map(function ($produk) {
+        // Transform the data into the desired format
+        $data = [
+            'id_pesanan' =>  $idPesananLatest,  // Placeholder, you can use $pesanan->id_pesanan for real data
+            'metode_pembayaran' => $pesanan->pembayaran->metode_pembayaran ?? null,
+            'total_pembayaran' => $pesanan->pembayaran->total_pembayaran ?? null,
+            'status_pembayaran' => $pesanan->pembayaran->status_pembayaran ?? null,
+            'waktu_transaksi' => $pesanan->pembayaran->waktu_transaksi ?? null,
+            'produk' => $pesanan->detailPesanan->map(function ($detail) {
                 return [
-                    'price' => $produk['harga'],
-                    'quantity' => $produk['jumlah'],
-                    'name' => $produk['nama_produk'],
+                    'harga' => $detail->harga,
+                    'jumlah' => $detail->kuantitas,
+                    'id_menu' => $detail->id_menu,
                 ];
-            }, $request->produk);
-            
-            $params = [
-                'transaction_details' => [
-                    'order_id' => $pembayaran->id,
-                    'gross_amount' => $request->total_pembayaran,
-                ],
+            })->toArray(),
+        ];
 
-                'item_details' => $itemDetails,
-
-                'enabled_payments' => ['credit_card', 'bca_va', 'bni_va', 'bri_va']
+        // Transform item details for Midtrans API
+        $itemDetails = array_map(function ($item) {
+            return [
+                'price' => $item['harga'],
+                'quantity' => $item['jumlah'],
+                'name' => $item['id_menu']
             ];
+        }, $data['produk']);
 
-            $auth = base64_encode(env('MIDTRANS_SERVER_KEY') . ':'); // Append ':' for the correct format
-            $headers = [
-                'Content-Type' => 'application/json',
-                'Authorization' => "Basic $auth"
-            ];
+        // Build Midtrans payload
+        $midtransPayload = [
+            'transaction_details' => [
+                'order_id' => $data['id_pesanan'],
+                'gross_amount' => $data['total_pembayaran'],
+            ],
+            'item_details' => $itemDetails,
+            'enabled_payments' => ['gopay'] // Enable QRIS
+        ];
 
-            // Make the API call with SSL verification disabled
-             $response = Http::withHeaders($headers)
-            ->withOptions(['verify' => false]) // Disable SSL verification for testing
-            ->post('https://app.sandbox.midtrans.com/snap/v1/transactions', $params);
-
-            // Decode the response from Midtrans
-             $response = json_decode($response->body());
-
+        // Midtrans server key
+        $serverKey = "SB-Mid-server-5eCkCLlExn9bXjINkjCGKCNj";
+        if (!$serverKey) {
+            return response()->json(['success' => false, 'message' => 'Server Key is not configured.'], 500);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Pembayaran berhasil ditambahkan.',
-            
-        ], 201);
+        $auth = base64_encode($serverKey . ':');
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => "Basic $auth"
+        ];
+
+        try {
+            // Send the request to Midtrans
+            $response = Http::withHeaders($headers)
+                ->withOptions(['verify' => false]) // Disable SSL only for sandbox/testing
+                ->post('https://app.sandbox.midtrans.com/snap/v1/transactions', $midtransPayload);
+
+            $responseBody = json_decode($response->body(), true);
+
+            if ($response->successful()) {
+                // Check if the response contains the QRIS URL
+                $redirectUrl = $responseBody['redirect_url'] ?? null;
+
+                if ($redirectUrl) {
+                    // Clean the URL by removing backslashes
+                    $cleanRedirectUrl = str_replace('\\', '', $redirectUrl);
+
+                    // Redirect to the clean QRIS URL
+                    return redirect()->away($cleanRedirectUrl);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'QRIS payment URL not found.',
+                        'error' => $responseBody
+                    ], 500);
+                }
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Pembayaran gagal diproses.',
+                    'error' => $responseBody
+                ], $response->status());
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memproses pembayaran.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
+
 
     public function update(Request $request, $id)
     {
@@ -150,7 +188,7 @@ class PembayaranController extends Controller
                     'total_harga' => $pesanan->total_pembayaran,
                     'pesanan' => $pesanan->detailPesanan->map(function ($detail) {
                         return [
-                            'produk' => $detail->menu->nama_produk,
+                            'produk' => $detail->menu->id_menu,
                             'kuantitas' => $detail->kuantitas,
                             'harga' => $detail->harga,
                         ];
@@ -162,66 +200,66 @@ class PembayaranController extends Controller
         return response()->json($pesananData);
     }
 
-     // Method untuk konfirmasi pesanan
-     public function konfirmasiPesanan(Request $request, $id_pesanan)
-     {
-         $request->validate([
-             'status_pembayaran' => 'required|in:berhasil,gagal',
-             'status_pesanan' => 'required|in:berhasil,gagal,menunggu',
-         ]);
- 
-         // Cari pesanan berdasarkan id_pesanan
-         $pesanan = Pesanan::findOrFail($id_pesanan);
- 
-         // Perbarui status pembayaran dan pesanan
-         $pesanan->pembayaran->update([
-             'status_pembayaran' => $request->status_pembayaran,
-         ]);
-         $pesanan->update([
-             'status_pesanan' => $request->status_pesanan,
-         ]);
- 
-         return response()->json([
-             'message' => 'Status pembayaran dan pesanan berhasil diperbarui',
-             'status_pembayaran' => $pesanan->pembayaran->status_pembayaran,
-             'status_pesanan' => $pesanan->status_pesanan,
-         ]);
-     }
+    // Method untuk konfirmasi pesanan
+    public function konfirmasiPesanan(Request $request, $id_pesanan)
+    {
+        $request->validate([
+            'status_pembayaran' => 'required|in:berhasil,gagal',
+            'status_pesanan' => 'required|in:berhasil,gagal,menunggu',
+        ]);
 
-     public function batalPesanan(Request $request, $id_pesanan)
-{
-    try {
         // Cari pesanan berdasarkan id_pesanan
         $pesanan = Pesanan::findOrFail($id_pesanan);
 
-        // Periksa apakah pesanan memiliki pembayaran terkait
-        $pembayaran = $pesanan->pembayaran;
-
-        if (!$pembayaran) {
-            return response()->json([
-                'message' => 'Pembayaran terkait tidak ditemukan untuk pesanan ini.'
-            ], 404);
-        }
-
-        // Perbarui status pembayaran dan status pesanan
-        $pembayaran->update([
-            'status_pembayaran' => 'gagal', // Atau status lain yang menunjukkan pembatalan
+        // Perbarui status pembayaran dan pesanan
+        $pesanan->pembayaran->update([
+            'status_pembayaran' => $request->status_pembayaran,
         ]);
         $pesanan->update([
-            'status_pesanan' => 'gagal', // Atau status lain yang sesuai
+            'status_pesanan' => $request->status_pesanan,
         ]);
 
         return response()->json([
-            'message' => 'Pesanan berhasil dibatalkan.',
-            'id_pesanan' => $pesanan->id_pesanan,
+            'message' => 'Status pembayaran dan pesanan berhasil diperbarui',
+            'status_pembayaran' => $pesanan->pembayaran->status_pembayaran,
             'status_pesanan' => $pesanan->status_pesanan,
-            'status_pembayaran' => $pembayaran->status_pembayaran,
-        ], 200);
-    } catch (Exception $e) {
-        return response()->json([
-            'message' => 'Terjadi kesalahan saat membatalkan pesanan.',
-            'error' => $e->getMessage(),
-        ], 500);
+        ]);
     }
-}
+
+    public function batalPesanan(Request $request, $id_pesanan)
+    {
+        try {
+            // Cari pesanan berdasarkan id_pesanan
+            $pesanan = Pesanan::findOrFail($id_pesanan);
+
+            // Periksa apakah pesanan memiliki pembayaran terkait
+            $pembayaran = $pesanan->pembayaran;
+
+            if (!$pembayaran) {
+                return response()->json([
+                    'message' => 'Pembayaran terkait tidak ditemukan untuk pesanan ini.'
+                ], 404);
+            }
+
+            // Perbarui status pembayaran dan status pesanan
+            $pembayaran->update([
+                'status_pembayaran' => 'gagal', // Atau status lain yang menunjukkan pembatalan
+            ]);
+            $pesanan->update([
+                'status_pesanan' => 'gagal', // Atau status lain yang sesuai
+            ]);
+
+            return response()->json([
+                'message' => 'Pesanan berhasil dibatalkan.',
+                'id_pesanan' => $pesanan->id_pesanan,
+                'status_pesanan' => $pesanan->status_pesanan,
+                'status_pembayaran' => $pembayaran->status_pembayaran,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat membatalkan pesanan.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

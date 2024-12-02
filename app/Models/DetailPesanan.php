@@ -11,7 +11,7 @@ class DetailPesanan extends Model
     protected $table = 'detail_pesanan'; 
     protected $primaryKey = 'id_detail_pesanan'; 
     protected $casts = [
-        'id_detail_pesanan' => 'strinh',
+        'id_detail_pesanan' => 'string',
     ];
     protected $fillable = [
         'id_detail_pesanan',

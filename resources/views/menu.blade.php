@@ -27,14 +27,13 @@
         @foreach ($menus as $menu)
             <div class="menu-box">
                 <div class="menu-image">
-                    <img src="miegoreng.png" alt="gambar">
+                    <img src="{{$menu['gambar']}}" alt="gambar">
                 </div>
                 <div class="menu-description">
                     <p class="title">{{ $menu['nama_produk'] }}</p>
                     <p class="description">{{ $menu['deskripsi'] }}</p>
                     <div class="price-controls">
                         <p class="price">Rp {{ number_format($menu['harga'], 0, ',', '.') }}</p>
-                        <!-- Set quantity controls to be always displayed with a default value of 0 -->
                         <div class="quantity-controls" style="display: flex;">
                             <button class="decrease-btn" disabled>−</button>
                             <span class="quantity">0</span>
@@ -45,9 +44,6 @@
             </div>
         @endforeach
     </main>
-
-    <!-- Clear Local Storage Button -->
-    {{-- <button id="clear-storage-btn">Clear Local Storage</button> --}}
 
     <!-- Bottom Navbar -->
     <footer class="bottom-navbar">
