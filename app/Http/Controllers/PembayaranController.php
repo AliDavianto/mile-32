@@ -7,6 +7,7 @@ use App\Models\Pembayaran;
 use Illuminate\Support\Facades\Http;
 use App\Models\Pesanan;
 use App\Models\DetailPesanan;
+use Illuminate\Support\Facades\Log;
 
 class PembayaranController extends Controller
 {
@@ -40,18 +41,28 @@ class PembayaranController extends Controller
     }
 
 
-    public function pembayaran(Request $id_pesanan)
+    public function pembayaran(Request $request)
     {
         // Query the Pesanan model with related data
-        // Find the latest Pesanan record
-        $pesanan = Pesanan::with(['pembayaran', 'detailPesanan'])
-            ->latest('id_pesanan') // Order by `id_pesanan` descending
-            ->firstOrFail();       // Get the latest Pesanan or fail if not found
-        $idPesananLatest = Pesanan::latest('id_pesanan')->value('id_pesanan');
+        // Validate the request data
+        Log::info('Masukkkkkkkkkkk:');
+        $request->validate([
+            'id_pesanan' => 'required|string|exists:pesanan,id_pesanan',
+        ]);
 
+        // Extract the id_pesanan from the request
+        $id_pesanan = $request->id_pesanan;
+        // Log::info('ID Pesanan yang diterima:', $id_pesanan);
+
+        // Query the Pesanan model with related data, filtered by id_pesanan
+        $pesanan = Pesanan::with(['pembayaran', 'detailPesanan'])
+            ->where('id_pesanan', $id_pesanan) // Filter by id_pesanan
+            ->firstOrFail(); // Get the matching record or fail if not found
         // Transform the data into the desired format
+        // Log::info('Pesanan yang ditemukan:', $pesanan);
+
         $data = [
-            'id_pesanan' =>  $idPesananLatest,  // Placeholder, you can use $pesanan->id_pesanan for real data
+            'id_pesanan' =>  $id_pesanan,  // Placeholder, you can use $pesanan->id_pesanan for real data
             'metode_pembayaran' => $pesanan->pembayaran->metode_pembayaran ?? null,
             'total_pembayaran' => $pesanan->pembayaran->total_pembayaran ?? null,
             'status_pembayaran' => $pesanan->pembayaran->status_pembayaran ?? null,
@@ -64,6 +75,8 @@ class PembayaranController extends Controller
                 ];
             })->toArray(),
         ];
+
+        // Log::info('Data yang akan dikirim:', $data);
 
         // Transform item details for Midtrans API
         $itemDetails = array_map(function ($item) {
@@ -171,14 +184,14 @@ class PembayaranController extends Controller
     }
     public function getPesananNonDigital()
     {
-        // Langkah 1: Ambil semua id_pesanan di tabel Pembayarans dengan metode_pembayaran = "non-digital" dan status_pembayaran = "menunggu"
-        $listIdPesananNonDigital = Pembayaran::where('metode_pembayaran', 'non-digital')
-            ->where('status_pembayaran', 'menunggu')
+        // Step 1: Get all `id_pesanan` with "Non-Digital" payment method and "menunggu" status
+        $listIdPesananNonDigital = Pembayaran::where('metode_pembayaran', 'Non-Digital')
+            ->where('status_pembayaran', 1)
             ->pluck('id_pesanan')
             ->toArray();
 
-        // Langkah 2: Ambil data pesanan dan detail pesanan yang sesuai dengan listIdPesananNonDigital
-        $pesananData = Pesanan::with(['detailPesanan.menu'])
+        // Step 2: Fetch orders (`Pesanan`) and their associated details
+        $pesananData = Pesanan::with(['detailPesanan.menu']) // Load menu relationship
             ->whereIn('id_pesanan', $listIdPesananNonDigital)
             ->get()
             ->map(function ($pesanan) {
@@ -188,7 +201,8 @@ class PembayaranController extends Controller
                     'total_harga' => $pesanan->total_pembayaran,
                     'pesanan' => $pesanan->detailPesanan->map(function ($detail) {
                         return [
-                            'produk' => $detail->menu->id_menu,
+                            'id_menu' => $detail->menu->id_menu,
+                            'nama_produk' => $detail->menu->nama_produk, // Fetch `nama_produk` from the `menu` table
                             'kuantitas' => $detail->kuantitas,
                             'harga' => $detail->harga,
                         ];
@@ -196,70 +210,47 @@ class PembayaranController extends Controller
                 ];
             });
 
-        // Langkah 3: Kembalikan data dalam bentuk JSON
-        return response()->json($pesananData);
+        // Step 3: Pass the data to the view
+        return view('dashboard_kasir', ['pesananData' => $pesananData]);
     }
 
-    // Method untuk konfirmasi pesanan
-    public function konfirmasiPesanan(Request $request, $id_pesanan)
-    {
-        $request->validate([
-            'status_pembayaran' => 'required|in:berhasil,gagal',
-            'status_pesanan' => 'required|in:berhasil,gagal,menunggu',
-        ]);
 
+    // Method untuk konfirmasi pesanan
+    public function konfirmasiPesanan(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'id_pesanan' => 'required|string',
+            'status' => 'required|integer',
+        ]);
+    
+        $pesanan = Pesanan::findOrFail($request->id_pesanan);
+    
+        if ($request->status == 1) {
+            // Update for "Konfirmasi"
+            $pesanan->pembayaran->update(['status_pembayaran' => 3]);
+            $pesanan->update(['status_pesanan' => 2]);
+        } elseif ($request->status == 4) {
+            // Update for "Batal"
+            $pesanan->pembayaran->update(['status_pembayaran' => 4]);
+            $pesanan->update(['status_pesanan' => 4]);
+        }
+        return redirect()->route('getDashboardkasir');
+    }
+
+    public function batalPesanan(Request $request, $id_pesanan)
+    {
         // Cari pesanan berdasarkan id_pesanan
         $pesanan = Pesanan::findOrFail($id_pesanan);
 
         // Perbarui status pembayaran dan pesanan
         $pesanan->pembayaran->update([
-            'status_pembayaran' => $request->status_pembayaran,
+            'status_pembayaran' => 4,
         ]);
         $pesanan->update([
-            'status_pesanan' => $request->status_pesanan,
+            'status_pesanan' => 4,
         ]);
 
-        return response()->json([
-            'message' => 'Status pembayaran dan pesanan berhasil diperbarui',
-            'status_pembayaran' => $pesanan->pembayaran->status_pembayaran,
-            'status_pesanan' => $pesanan->status_pesanan,
-        ]);
-    }
-
-    public function batalPesanan(Request $request, $id_pesanan)
-    {
-        try {
-            // Cari pesanan berdasarkan id_pesanan
-            $pesanan = Pesanan::findOrFail($id_pesanan);
-
-            // Periksa apakah pesanan memiliki pembayaran terkait
-            $pembayaran = $pesanan->pembayaran;
-
-            if (!$pembayaran) {
-                return response()->json([
-                    'message' => 'Pembayaran terkait tidak ditemukan untuk pesanan ini.'
-                ], 404);
-            }
-
-            // Perbarui status pembayaran dan status pesanan
-            $pembayaran->update([
-                'status_pembayaran' => 'gagal', // Atau status lain yang menunjukkan pembatalan
-            ]);
-            $pesanan->update([
-                'status_pesanan' => 'gagal', // Atau status lain yang sesuai
-            ]);
-
-            return response()->json([
-                'message' => 'Pesanan berhasil dibatalkan.',
-                'id_pesanan' => $pesanan->id_pesanan,
-                'status_pesanan' => $pesanan->status_pesanan,
-                'status_pembayaran' => $pembayaran->status_pembayaran,
-            ], 200);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat membatalkan pesanan.',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
+        return redirect()->route('getDashboardkasir');
     }
 }

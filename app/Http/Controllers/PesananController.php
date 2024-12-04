@@ -75,7 +75,7 @@ class PesananController extends Controller
         return $idDetailPesanan;
     }
 
-    public function createIdPembayaran($nomorMeja)
+    public function createIdPembayaran($nomorMeja, $metodePembayaran)
     {
         // Get the current date in the format YYYYMMDD
         $currentDate = now()->format('Ymd');
@@ -87,7 +87,7 @@ class PesananController extends Controller
 
         // Extract the sequence number from the latest payment, if available
         if ($latestPayment) {
-            // Assuming the ID format is PMXXYYDYYYYMMDD
+            // Assuming the ID format is PMXXYYDYYYYMMDD or PMXXYYNDYYYYMMDD
             $lastSequence = intval(substr($latestPayment->id_pembayaran, 4, 2));
             $nextSequence = $lastSequence + 1;
         } else {
@@ -99,12 +99,22 @@ class PesananController extends Controller
 
         // Format the table number as a 2-digit string
         $formattedNomorMeja = str_pad($nomorMeja, 2, '0', STR_PAD_LEFT);
+        Log::info('Metode Pembayaran:',  ['metode_pembayaran' => $metodePembayaran]);
+        // Determine the suffix based on payment method
+        if ($metodePembayaran === "Digital") {
+            $suffix = 'D';
+        } elseif ($metodePembayaran === "Non-Digital") {
+            $suffix = 'ND';
+        } else {
+            throw new \InvalidArgumentException("Invalid payment method: $metodePembayaran");
+        }
 
         // Combine components to form the ID
-        $idPembayaran = 'PM' . $formattedNomorMeja . $sequenceNumber . 'D' . $currentDate;
+        $idPembayaran = 'PM' . $formattedNomorMeja . $sequenceNumber . $suffix . $currentDate;
 
         return $idPembayaran;
     }
+
 
 
     // Method untuk entry ke tabel pesanan
@@ -114,38 +124,46 @@ class PesananController extends Controller
         $validatedData = $request->validate([
             'nomor_meja' => 'required|integer',
             'pesanan' => 'required|array',
-            'pesanan.*.id_menu' => 'required|string', // Changed to string for id_menu
+            'pesanan.*.id_menu' => 'required|string',
             'pesanan.*.kuantitas' => 'required|integer|min:1',
             'pesanan.*.harga' => 'required|numeric|min:0',
             'total_harga' => 'required|numeric|min:0',
+            'metode_pembayaran' => 'required|string',
         ]);
 
-        // // Logging data permintaan
         Log::info('Data pesanan yang diterima:', $validatedData);
         $id_pesanan = $this->createIdPesanan($validatedData['nomor_meja']);
+
         try {
             // Mulai transaksi database
             DB::beginTransaction();
 
             // Simpan data ke tabel Pesanan
             $pesanan = Pesanan::create([
-                'id_pesanan' =>  $id_pesanan,
+                'id_pesanan' => $id_pesanan,
                 'nomor_meja' => $validatedData['nomor_meja'],
                 'waktu_pemesanan' => now(),
-                'status_pesanan' => 1, // atau status yang diinginkan
-                'total_pembayaran' =>  $validatedData['total_harga'],
+                'status_pesanan' => 1,
+                'total_pembayaran' => $validatedData['total_harga'],
             ]);
 
-            // Panggil method untuk menyimpan detail pesanan
+            // Panggil method untuk menyimpan detail pesanan dan pembayaran
             $this->createDetailPesanan($validatedData['pesanan'], $id_pesanan, $validatedData['nomor_meja']);
-            $this->createPembayaran($id_pesanan, $validatedData['nomor_meja'],  $validatedData['total_harga']);
+            $this->createPembayaran($id_pesanan, $validatedData['nomor_meja'], $validatedData['total_harga'], $validatedData['metode_pembayaran']);
+
             // Commit transaksi jika semua berhasil
             DB::commit();
+            Log::info('Udah di commit:');
+            // Redirect to the pembayaran route, passing id_pesanan
+            // Create a new instance of the PembayaranController
+            // $pembayaranController = new PembayaranController();
 
-            // Return response sukses
+            // // Call the pembayaran method
+            // $response = $pembayaranController->pembayaran(new Request(['id_pesanan' => $id_pesanan]));
+
+            // Return the response from the pembayaran method
             return response()->json([
-                'message' => 'Pesanan berhasil disimpan',
-                'data' => $pesanan,
+                'message' => 'Pesanan Berhasil dicatat',
             ], 201);
         } catch (Exception $e) {
             // Rollback transaksi jika ada error
@@ -158,6 +176,7 @@ class PesananController extends Controller
             ], 500);
         }
     }
+
 
     // Method untuk menyimpan detail pesanan
     protected function createDetailPesanan(array $pesanan, string $id_pesanan, int $nomorMeja)
@@ -174,30 +193,31 @@ class PesananController extends Controller
         }
     }
 
-    protected function createPembayaran(string $id_pesanan, int $nomorMeja, int $total_pembayaran)
+    protected function createMetodePembayaran(string $metodePembayaran)
     {
-        $id_pembayaran = $this->createIdPembayaran($nomorMeja);
+        Log::info('Metode Pembayaran yang diterima dari localstorage:', ['metode_pembayaran' => $metodePembayaran]);
+        if ($metodePembayaran === "1") {
+            return "Digital";
+        } else {
+            return "Non-Digital";
+        }
+    }
+
+    protected function createPembayaran(string $id_pesanan, int $nomorMeja, int $total_pembayaran, string $metodePembayaran)
+    {
+        $metode_pembayaran = $this->createMetodePembayaran($metodePembayaran);
+        $id_pembayaran = $this->createIdPembayaran($nomorMeja, $metode_pembayaran);
 
         Pembayaran::create([
             'id_pembayaran' => $id_pembayaran,
             'id_pesanan' => $id_pesanan, // Correctly references the valid id_pesanan
             'total_pembayaran' =>  $total_pembayaran,
-            'metode_pembayaran' => 'Digital',
+            'metode_pembayaran' => $metode_pembayaran,
             'status_pembayaran' => 1,
             'waktu_transaksi' => now(),
         ]);
     }
 
-    // Method untuk checkout
-    // public function checkout(Request $request)
-    // {
-    //     // Simpan data ke tabel Pesanan
-    //     // Panggil fungsi createPesanan dengan data request
-    //    $this->createPesanan($request);
-
-    //     // Kembalikan respons
-    //     return response()->json( "createPesanan dipanggil wkwkwkwkwkwk", 201);
-    // }
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -228,4 +248,49 @@ class PesananController extends Controller
             'message' => 'Pesanan berhasil dihapus.'
         ], 200);
     }
+
+    public function getPesananPembayaranBerhasil()
+    {
+        // Step 1: Get all `id_pesanan` where `status_pembayaran === 2`
+        $listIdPesanan = Pesanan::where('status_pesanan', 2)->pluck('id_pesanan')->toArray();
+
+        // Step 2: Fetch orders (`Pesanan`) and their associated details
+        $pesananData = Pesanan::with(['detailPesanan.menu']) // Load `menu` relationship via `detailPesanan`
+            ->whereIn('id_pesanan', $listIdPesanan)
+            ->get()
+            ->map(function ($pesanan) {
+                return [
+                    'id_pesanan' => $pesanan->id_pesanan,
+                    'nomor_meja' => $pesanan->nomor_meja,
+                    'total_harga' => $pesanan->total_pembayaran,
+                    'pesanan' => $pesanan->detailPesanan->map(function ($detail) {
+                        return [
+                            'id_menu' => $detail->menu->id_menu,
+                            'nama_produk' => $detail->menu->nama_produk, // Fetch `nama_produk` from the `menu` table
+                            'kuantitas' => $detail->kuantitas,
+                        ];
+                    })->toArray(), // Convert nested data to an array
+                ];
+            })->toArray(); // Convert collection to an array
+
+        // Step 3: Return or pass the data (returning here for demonstration purposes)
+        // Return the view with the data
+        return view('dashboard_staff', compact('pesananData'));
+    }
+
+    public function dashboardstaff(Request $request)
+{
+    $idPesanan = $request->input('id_pesanan');
+
+    // Process the request (e.g., mark the order as completed)
+    $pesanan = Pesanan::find($idPesanan);
+    if ($pesanan) {
+        $pesanan->status_pesanan = 3; // Assuming 3 means "completed"
+        $pesanan->save();
+
+        return redirect()->route('getDashboardstaff');
+    }
+
+    return response()->json(['message' => 'Pesanan tidak ditemukan!'], 404);
+}
 }

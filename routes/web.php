@@ -25,11 +25,10 @@ Route::post('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('p
 Route::get('/logout', [AuthController::class, 'logout']);
 
 // Staff Routes
-Route::get('/dashboardkasir', function () { return view('dashboard_kasir'); });
-Route::post('/dashboardkasir', [AuthController::class, 'dashboardkasir'])->name('dashboardkasir');
-Route::get('/dashboardstaff', function () { return view('dashboard_staff'); });
-Route::post('/dashboardstaff', [AuthController::class, 'dashboardstaff'])->name('dashboardstaff');
-
+Route::get('/dashboardkasir', [PembayaranController::class, 'getPesananNonDigital'])->name('getDashboardkasir');
+Route::post('/dashboardkasir', [PembayaranController::class, 'konfirmasiPesanan'])->name('postDashboardkasir');
+Route::get('/dashboardstaff', [PesananController::class, 'getPesananPembayaranBerhasil'])->name('getDashboardstaff');
+Route::post('/dashboardstaff', [PesananController::class, 'dashboardstaff'])->name('postDashboardstaff');
 // Admin Routes
 
 //Admin Staff

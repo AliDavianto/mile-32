@@ -50,12 +50,13 @@ async function handleCheckout() {
         alert('Your cart is empty. Please add items before checking out.');
         return;
     }
-
+    const paymentMethod = document.getElementById('payment-method').value;
     // Refresh data from localStorage in case it was modified elsewhere
     const payload = {
         nomor_meja: localStorage.getItem('nomor_meja') || 'Unknown',
         pesanan: JSON.parse(localStorage.getItem('pesanan')) || [],
         total_harga: JSON.parse(localStorage.getItem('total_harga')) || 0,
+        metode_pembayaran: paymentMethod, // Add the payment method key
     };
 
     try {
