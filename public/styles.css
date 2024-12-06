@@ -311,3 +311,45 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
+
+/* Styling untuk Search Bar */
+/* Styling untuk Search Bar */
+.search-bar {
+    display: flex;
+    justify-content: center; /* Tetap terpusat secara vertikal */
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
+
+/* Kontainer Search Bar */
+.search-container {
+    width: 100%; /* Mengikuti lebar kontainer */
+    max-width: 1200px; /* Atur batas lebar maksimal */
+    margin: 0 auto; /* Pusatkan secara horizontal */
+    padding: 0 16px; /* Sama dengan padding kontainer menu */
+    position: relative;
+    margin-left: -20px; /* Geser 5px ke kiri */
+}
+
+.search-input {
+    width: 100%; /* Isi seluruh ruang kontainer */
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: border 0.2s ease-in-out;
+    font-family: 'Poppins', sans-serif;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+}
+
+/* Tambahan untuk hover */
+.search-input:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
