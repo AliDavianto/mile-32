@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Staff</title>
-    <link rel="stylesheet" href="adminstaff.css">
+    <title>Admin Dashboard - Jabatan</title>
+    <link rel="stylesheet" href="adminjabatan.css">
     <!-- Menambahkan Font Awesome CDN untuk ikon kaca pembesar -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
@@ -24,8 +24,8 @@
         <li class="{{ request()->is('adminkategori') ? 'active' : '' }}">
             <a href="{{ url('/adminkategori') }}"><i class="icon">📋</i> Kategori</a>
         </li>
-        <li class="{{ request()->is('adminstaff') ? 'active' : '' }}">
-            <a href="{{ url('/adminstaff') }}"><i class="icon">📋</i> staff</a>
+        <li class="{{ request()->is('adminjabatan') ? 'active' : '' }}">
+            <a href="{{ url('/adminjabatan') }}"><i class="icon">📋</i> Jabatan</a>
         </li>
         <li class="{{ request()->is('adminstatus') ? 'active' : '' }}">
             <a href="{{ url('/adminstatus') }}"><i class="icon">📋</i> Status</a>
@@ -36,13 +36,13 @@
 
     <div class="main-content">
         <div class="header">
-            <h3>Data Staff</h3>
+            <h3>Data Jabatan</h3>
             <div class="header-actions">
                 <!-- Menambahkan ikon kaca pembesar di sini -->
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" placeholder="Search" class="search-box">
                 <!-- Tombol "Tambah" mengarah ke route pendaftaran -->
-                <a href="{{ url('/staff/create') }}">
+                <a href="{{ url('/jabatan/create') }}">
                     <button class="add-button">Tambah</button>
                 </a>
             </div>
@@ -52,35 +52,33 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nama</th>
+                        <th>ID Jabatan</th>
                         <th>Jabatan</th>
-                        <th>Email</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($staff as $k)
+                    @forelse ($jabatan as $k)
                     <tr>
-                        <td>{{ $k->nama }}</td>
-                        <td>{{ $k->jabatan->jabatan }}</td>
-                        <td>{{ $k->email }}</td>
+                        <td>{{ $k->id_jabatan }}</td>
+                        <td>{{ $k->jabatan }}</td>
                         <td>
                             <!-- Edit Button -->
-                            <a href="{{ route('editstaff', $k->id_user) }}" class="edit-button">Edit</a>
+                            <a href="{{ route('editjabatan', $k->id_jabatan) }}" class="edit-button">Edit</a>
 
                             <!-- Delete Form -->
-                            <form action="{{ route('destroystaff', $k->id_user) }}" method="POST"
+                            <form action="{{ route('destroyjabatan', $k->id_jabatan) }}" method="POST"
                                 style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="delete-button"
-                                    onclick="return confirm('Yakin ingin menghapus staff ini?')">Hapus</button>
+                                    onclick="return confirm('Yakin ingin menghapus jabatan ini?')">Hapus</button>
                             </form>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3">Tidak ada data staff ditemukan.</td>
+                        <td colspan="3">Tidak ada data jabatan ditemukan.</td>
                     </tr>
                 @endforelse
                 </tbody>

@@ -5,19 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens; // Import HasApiTokens
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens; // Use the trait
+    use HasFactory, Notifiable, HasApiTokens;
 
     protected $table = 'users';
-    protected $primaryKey = 'id_user'; 
+    protected $primaryKey = 'id_user';
+    protected $casts = [
+        'id_user' => 'string',
+    ];
     protected $fillable = [
+        'id_user',
         'nama',
         'email',
         'password',
-        'jabatan'
+        'id_jabatan'
     ];
 
     protected $hidden = [
@@ -25,7 +29,9 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public static $rules = [
-        'jabatan' => 'required|in:admin,staff,manajer,kasir'
-    ];
+    // Define the belongsTo relationship
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id_jabatan');
+    }
 }

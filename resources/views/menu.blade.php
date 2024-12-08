@@ -22,32 +22,28 @@
         </div>
     </header>
 
+    <!-- Search Bar -->
+
     <!-- Menu Items -->
     <main class="menu-section">
-        @foreach ($menus as $menu)
-            <div class="menu-box">
-                <div class="menu-image">
-                    <img src="miegoreng.png" alt="gambar">
-                </div>
-                <div class="menu-description">
-                    <p class="title">{{ $menu['nama_produk'] }}</p>
-                    <p class="description">{{ $menu['deskripsi'] }}</p>
-                    <div class="price-controls">
-                        <p class="price">Rp {{ number_format($menu['harga'], 0, ',', '.') }}</p>
-                        <!-- Set quantity controls to be always displayed with a default value of 0 -->
-                        <div class="quantity-controls" style="display: flex;">
-                            <button class="decrease-btn" disabled>−</button>
-                            <span class="quantity">0</span>
-                            <button class="increase-btn">+</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
+    <section class="search-bar">
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Cari menu..." />
+        </div>
+    </section>
+        <div id="kategori-1" class="kategori-section">
+            <h2>Makanan</h2>
+            <div class="menu-container"></div>
+        </div>
+        <div id="kategori-2" class="kategori-section">
+            <h2>Minuman</h2>
+            <div class="menu-container"></div>
+        </div>
+        <div id="kategori-4" class="kategori-section">
+            <h2>Snack</h2>
+            <div class="menu-container"></div>
+        </div>
     </main>
-
-    <!-- Clear Local Storage Button -->
-    <button id="clear-storage-btn">Clear Local Storage</button>
 
     <!-- Bottom Navbar -->
     <footer class="bottom-navbar">
@@ -71,7 +67,7 @@
     </script>
 
     <!-- External JavaScript -->
-    <script src="{{ asset('js/menu.js') }}"></script>
+    <script src="{{ asset('js/menu.js') }}?v={{ time() }}"></script>
 </body>
 
 </html>

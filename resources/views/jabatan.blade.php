@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Jabatan - Mile 32</title>
-    <link rel="stylesheet" href="jabatan.css">
+    <link rel="stylesheet" href="../../jabatan.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 </head>
 
@@ -14,7 +14,7 @@
     <!-- Navbar -->
     <header class="navbar">
     <div class="logo-container">
-        <img src="logo mile.png" alt="Logo Mile Cafe" class="logo-image">
+        <img src="../../logo mile.png" alt="Logo Mile Cafe" class="logo-image">
         <div class="logo-text">
             <h1>Miles 32</h1>
             <p>Temukan harmoni rasa dan cerita di Miles 32, tempat membawa pengalaman baru!</p>
@@ -24,13 +24,13 @@
 
     <!-- Form Section -->
     <div class="form-container">
-        <img src="loginlogo.jpg" alt="Illustration">
-        <h2>WELCOME TO MILE 32</h2>
+        <img src="../../loginlogo.jpg" alt="Illustration">
+        <h2>DAFTARKAN JABATAN BARU</h2>
         
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('storejabatan') }}" method="POST">
             @csrf
-            <label for="email">JABATAN</label>
-            <input type="text" id="email" name="email" placeholder="Masukan Jabatan">
+            <label for="jabatan">JABATAN</label>
+            <input type="text" id="jabatan" name="jabatan" placeholder="Masukan Jabatan">
             
             <button type="submit" class="update-btn">Kirim</button>
         </form>
