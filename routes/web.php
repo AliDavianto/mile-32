@@ -103,5 +103,14 @@ Route::get('/registmenu', function () {
     return view('registmenu');
 });
 
+// adminmenu Route
+Route::get('/adminmenu', function () {
+    return view('adminmenu');
+});
+
+// adminlapkeu Route
+Route::get('/adminlapkeu', function () {
+    return view('adminlapkeu');
+});
 
 Route::post('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');
