@@ -29,7 +29,7 @@ class StatusController extends Controller
 
         Status::create(['status' => $status]);
 
-        return redirect()->route('adminstatus')->with('success', 'Status berhasil ditambahkan.');
+        return redirect()->route('adminstatus');
     }
 
     public function show(Status $status)
@@ -53,7 +53,7 @@ class StatusController extends Controller
         $status->status = strtolower($request->input('status'));
         $status->save();
 
-        return redirect()->route('adminstatus')->with('success', 'Status berhasil diperbarui.');
+        return redirect()->route('adminstatus');
     }
 
     public function destroy($id)
