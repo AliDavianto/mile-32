@@ -12,12 +12,24 @@
     <div class="sidebar">
         <h2>Admin Dashboard</h2>
         <ul>
-            <li class="active"><a href="#laporan"><i class="icon">📄</i> Laporan Keuangan</a></li>
-            <li><a href="#menu"><i class="icon">📋</i> Menu</a></li>
-            <li><a href="#staff"><i class="icon">👥</i> Staff</a></li>
-            <li><a href="#kategori"><i class="icon">📋</i> Kategori</a></li>
-            <li><a href="#jabatan"><i class="icon">📋</i> Jabatan</a></li>
-            <li><a href="#status"><i class="icon">📋</i> Status</a></li>
+            <li class="{{ request()->is('adminlaporan') ? 'active' : '' }}">
+                <a href="{{ url('/adminlaporan') }}"><i class="icon">📄</i> Laporan Keuangan</a>
+            </li>
+            <li class="{{ request()->is('adminmenu') ? 'active' : '' }}">
+                <a href="{{ url('/adminmenu') }}"><i class="icon">📋</i> Menu</a>
+            </li>
+            <li class="{{ request()->is('adminstaff') ? 'active' : '' }}">
+                <a href="{{ url('/adminstaff') }}"><i class="icon">👥</i> Staff</a>
+            </li>
+            <li class="{{ request()->is('adminkategori') ? 'active' : '' }}">
+                <a href="{{ url('/adminkategori') }}"><i class="icon">📋</i> Kategori</a>
+            </li>
+            <li class="{{ request()->is('adminjabatan') ? 'active' : '' }}">
+                <a href="{{ url('/adminjabatan') }}"><i class="icon">📋</i> Jabatan</a>
+            </li>
+            <li class="{{ request()->is('adminstatus') ? 'active' : '' }}">
+                <a href="{{ url('/adminstatus') }}"><i class="icon">📋</i> Status</a>
+            </li>
         </ul>
         <button class="logout">Logout</button>
     </div>
@@ -29,10 +41,6 @@
                 <!-- Menambahkan ikon kaca pembesar di sini -->
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" placeholder="Search" class="search-box">
-                <!-- Tombol "Tambah" mengarah ke route pendaftaran -->
-                <a href="{{ url('/pendaftaran') }}">
-                    <button class="add-button">Tambah</button>
-                </a>
             </div>
         </div>
         
@@ -40,26 +48,27 @@
             <table>
             <thead>
     <tr>
-        <th>ID Transaksi</th>
-        <th>Total</th>
-        <th>Metode Pembayaran</th>
+        <th>ID Pembayaran</th>
+        <th>ID Pesanan</th>
         <th>Total Pembayaran</th>
+        <th>Metode Pembayaran</th>
+        <th>Tanggal Pembayaran</th>
+        
         <th></th> <!-- Menambahkan header aksi -->
     </tr>
 </thead>
 <tbody>
-    @for ($i = 0; $i < 8; $i++)
+    @foreach ($laporans as $laporan)
         <tr>
-            <td>TM1701D20241104</td>
-            <td>{{ $i < 2 ? '14 Januari 2024' : 'Staff Dapur' }}</td>
-            <td>Digital</td>
-            <td>Rp{{ number_format(50000 * ($i + 1), 0, ',', '.') }}</td>
-            <td> <!-- Tombol aksi berada di sini -->
-                
-            </td>
+            <td>{{ $laporan->id_pembayaran }}</td>
+            <td>{{ $laporan->id_pesanan }}</td>
+            <td>{{ $laporan->metode_pembayaran }}</td>
+            <td>Rp{{ number_format($laporan->total_pembayaran, 0, ',', '.') }}</td>
+            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_pembayaran)->format('d F Y') }}</td>
         </tr>
-    @endfor
+    @endforeach
 </tbody>
+
 
             </table>
             <div class="pagination">

@@ -63,6 +63,18 @@ Route::get('/kategori/update/{id}', [KategoriController::class, 'edit'])->name('
 Route::post('/kategori/update/{id}', [KategoriController::class, 'update'])->name('changekategori');
 Route::delete('/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('destroykategori');
 
+// Admin Menu
+Route::get('/adminmenu', [MenuController::class, 'index'])->name('adminmenu');
+Route::get('/menu/create', [MenuController::class, 'create']);
+Route::post('/menu/create', [MenuController::class, 'store'])->name('storemenubaru');
+Route::get('/menu/update/{id}', [MenuController::class, 'edit'])->name('editmenu');
+Route::post('/menu/update/{id}', [MenuController::class, 'update'])->name('changemenu');
+Route::delete('/menu/delete/{id}', [MenuController::class, 'destroy'])->name('destroymenu');
+
+
+// Admin lapkeu
+Route::get('/adminlaporan', [LaporanController::class, 'index'])->name('adminkategori'); // Correct route definition
+
 // Resource Routes
 Route::resource('menus', MenuController::class);
 Route::resource('pesanans', PesananController::class);

@@ -66,7 +66,7 @@ form {
     margin: 0 auto; /* Center the form */
 }
 
-input[type="text"], input[type="file"] {
+input[type="text"], input[type="file"], input[type="select"] {
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -110,3 +110,20 @@ input[type="text"], input[type="file"] {
     }
 }
 
+select {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Full width */
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background-color: white;
+    appearance: none;  /* Remove default select styling */
+}
+
+select:focus {
+    outline: none;
+    border-color: #f0c040;
+    box-shadow: 0 0 5px rgba(240, 192, 64, 0.5);
+}
