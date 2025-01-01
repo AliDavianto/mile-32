@@ -22,6 +22,11 @@ class Pembayaran extends Model
         'waktu_transaksi'
     ];
 
+
+    const STATUS_PENDING = 1;
+    const STATUS_SUCCESS = 3;
+    const STATUS_FAILED = 4;
+    
     public function pesanan()
     {
         return $this->belongsTo(Pesanan::class, 'id_pesanan');

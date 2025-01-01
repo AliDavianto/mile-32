@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+
 
 class PesananController extends Controller
 {
@@ -120,7 +122,6 @@ class PesananController extends Controller
     // Method untuk entry ke tabel pesanan
     public function createPesanan(Request $request)
     {
-        // Validasi input dari request
         $validatedData = $request->validate([
             'nomor_meja' => 'required|integer',
             'pesanan' => 'required|array',
@@ -135,10 +136,8 @@ class PesananController extends Controller
         $id_pesanan = $this->createIdPesanan($validatedData['nomor_meja']);
 
         try {
-            // Mulai transaksi database
             DB::beginTransaction();
 
-            // Simpan data ke tabel Pesanan
             $pesanan = Pesanan::create([
                 'id_pesanan' => $id_pesanan,
                 'nomor_meja' => $validatedData['nomor_meja'],
@@ -147,36 +146,27 @@ class PesananController extends Controller
                 'total_pembayaran' => $validatedData['total_harga'],
             ]);
 
-            // Panggil method untuk menyimpan detail pesanan dan pembayaran
             $this->createDetailPesanan($validatedData['pesanan'], $id_pesanan, $validatedData['nomor_meja']);
             $this->createPembayaran($id_pesanan, $validatedData['nomor_meja'], $validatedData['total_harga'], $validatedData['metode_pembayaran']);
 
-            // Commit transaksi jika semua berhasil
             DB::commit();
-            Log::info('Udah di commit:');
-            // Redirect to the pembayaran route, passing id_pesanan
-            // Create a new instance of the PembayaranController
-            // $pembayaranController = new PembayaranController();
+            Log::info('Pesanan berhasil disimpan.');
+            Log::info('OTW di pass di pembayaran.');
 
-            // // Call the pembayaran method
-            // $response = $pembayaranController->pembayaran(new Request(['id_pesanan' => $id_pesanan]));
-
-            // Return the response from the pembayaran method
+            Log::info('Udah di pass di pembayaran.');
+            Log::info('');
             return response()->json([
                 'message' => 'Pesanan Berhasil dicatat',
             ], 201);
         } catch (Exception $e) {
-            // Rollback transaksi jika ada error
             DB::rollBack();
 
-            // Return response error
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menyimpan pesanan',
                 'error' => $e->getMessage(),
             ], 500);
         }
     }
-
 
     // Method untuk menyimpan detail pesanan
     protected function createDetailPesanan(array $pesanan, string $id_pesanan, int $nomorMeja)
@@ -279,18 +269,18 @@ class PesananController extends Controller
     }
 
     public function dashboardstaff(Request $request)
-{
-    $idPesanan = $request->input('id_pesanan');
+    {
+        $idPesanan = $request->input('id_pesanan');
 
-    // Process the request (e.g., mark the order as completed)
-    $pesanan = Pesanan::find($idPesanan);
-    if ($pesanan) {
-        $pesanan->status_pesanan = 3; // Assuming 3 means "completed"
-        $pesanan->save();
+        // Process the request (e.g., mark the order as completed)
+        $pesanan = Pesanan::find($idPesanan);
+        if ($pesanan) {
+            $pesanan->status_pesanan = 3; // Assuming 3 means "completed"
+            $pesanan->save();
 
-        return redirect()->route('getDashboardstaff');
+            return redirect()->route('getDashboardstaff');
+        }
+
+        return response()->json(['message' => 'Pesanan tidak ditemukan!'], 404);
     }
-
-    return response()->json(['message' => 'Pesanan tidak ditemukan!'], 404);
-}
 }

@@ -22,6 +22,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/sukses', function () { return view('sukses'); });
 Route::get('/gagal', function () { return view('gagal'); });
 Route::post('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');
+Route::post('/webhooks/midtrans', [PembayaranController::class, 'webhook'])->name('webhook');
 Route::get('/logout', [AuthController::class, 'logout']);
 
 // Staff Routes

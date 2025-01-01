@@ -45,14 +45,18 @@ class PembayaranController extends Controller
     {
         // Query the Pesanan model with related data
         // Validate the request data
-        Log::info('Masukkkkkkkkkkk:');
-        $request->validate([
-            'id_pesanan' => 'required|string|exists:pesanan,id_pesanan',
-        ]);
+        // Get the latest pembayaran record
+        $latestPembayaran = Pembayaran::latest()->first();
 
-        // Extract the id_pesanan from the request
-        $id_pesanan = $request->id_pesanan;
-        // Log::info('ID Pesanan yang diterima:', $id_pesanan);
+        // Check if there is any pembayaran record
+        if (!$latestPembayaran) {
+            return response()->json([
+                'message' => 'Pembayaran tidak ditemukan.',
+            ], 404);
+        }
+
+        // Assign the latest id_pesanan
+        $id_pesanan = $latestPembayaran->id_pesanan;
 
         // Query the Pesanan model with related data, filtered by id_pesanan
         $pesanan = Pesanan::with(['pembayaran', 'detailPesanan'])
@@ -150,6 +154,104 @@ class PembayaranController extends Controller
         }
     }
 
+    public function webhook(Request $request)
+    {
+        $serverKey = env('MIDTRANS_SERVER_KEY', 'your-default-key');  // Fetch from env
+        $auth = base64_encode($serverKey . ':');
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => "Basic $auth"
+        ];
+
+        Log::info('Received Webhook Request:', $request->all());
+
+        $order_id = $request->input('order_id');
+        $transaction_id = $request->input('transaction_id');
+        $transaction_status = $request->input('transaction_status');
+
+        if (!$order_id) {
+            Log::error('Webhook request missing order_id');
+            return response()->json(['error' => 'Missing order_id'], 400);
+        }
+
+        $payment = Pembayaran::where('id_pesanan', $order_id)->first();
+
+        if (!$payment) {
+            Log::error('Payment record not found for order_id:', ['order_id' => $order_id]);
+            return response()->json(['error' => 'Payment not found'], 404);
+        }
+
+        if (in_array($payment->status_pembayaran, [Pembayaran::STATUS_SUCCESS])) {
+            Log::info('Payment already processed:', ['order_id' => $order_id]);
+            return response()->json('Payment already processed');
+        }
+
+        // Update status directly from webhook if available
+        if ($transaction_status) {
+            $this->updatePaymentStatus($payment, $transaction_status);
+            return response()->json('success');
+        }
+
+        // Fetch details from Midtrans if transaction_status is not provided
+        $url = "https://api.sandbox.midtrans.com/v2/{$order_id}/status";
+
+        Log::info('Fetching Midtrans Transaction Details:', ['url' => $url]);
+
+        try {
+            $response = Http::withHeaders($headers)->withOptions(['verify' => false])->get($url);
+
+            if ($response->failed()) {
+                Log::error('Failed to fetch transaction from Midtrans', ['order_id' => $order_id]);
+                return response()->json(['error' => 'Failed to fetch from Midtrans'], 500);
+            }
+
+            $responseData = $response->json();
+
+            if (!isset($responseData['order_id'])) {
+                Log::error('Invalid Midtrans API response');
+                return response()->json(['error' => 'Invalid Midtrans response'], 500);
+            }
+
+            $this->updatePaymentStatus($payment, $responseData['transaction_status']);
+
+            return response()->json('success');
+        } catch (\Exception $e) {
+            Log::error('Exception while processing webhook', ['message' => $e->getMessage()]);
+            return response()->json(['error' => 'Unexpected error occurred'], 500);
+        }
+         // Log the incoming request
+        //  Log::info('Webhook received:', $request->all());
+
+        //  // Process the webhook here (e.g., update payment status)
+ 
+        //  return response()->json(['message' => 'Webhook processed successfully']);
+    }
+
+    // Helper function to update payment status
+    private function updatePaymentStatus($payment, $status)
+    {
+        switch ($status) {
+            case 'capture':
+            case 'settlement':
+                $payment->status_pembayaran = Pembayaran::STATUS_SUCCESS;
+                break;
+            case 'pending':
+                $payment->status_pembayaran = Pembayaran::STATUS_PENDING;
+                break;
+            case 'deny':
+            case 'expire':
+            case 'cancel':
+                $payment->status_pembayaran = Pembayaran::STATUS_FAILED;
+                break;
+        }
+
+        $payment->save();
+        Log::info('Payment updated:', [
+            'order_id' => $payment->id_pesanan,
+            'status' => $payment->status_pembayaran
+        ]);
+    }
+
 
     public function update(Request $request, $id)
     {
@@ -223,9 +325,9 @@ class PembayaranController extends Controller
             'id_pesanan' => 'required|string',
             'status' => 'required|integer',
         ]);
-    
+
         $pesanan = Pesanan::findOrFail($request->id_pesanan);
-    
+
         if ($request->status == 1) {
             // Update for "Konfirmasi"
             $pesanan->pembayaran->update(['status_pembayaran' => 3]);
