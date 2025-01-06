@@ -21,9 +21,10 @@ class MenuController extends Controller
     // Method to retrieve menu
     public function getMenu(Request $request)
     {
+        $meja = $request->query('meja', null);
         $cacheKey = 'menu_data';
         $menus = $this->getMenuData($cacheKey);
-        return view('menu', compact('menus'));
+        return view('menu', compact('menus', 'meja'));
     }
 
     public function getMenuCart(Request $request)
@@ -153,7 +154,7 @@ class MenuController extends Controller
             'id_kategori' => 'required|exists:kategori,id_kategori', // Ensure valid kategori ID
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Allow empty image on update
         ]);
-        
+
 
         $gambarPath = $menu->gambar;
 

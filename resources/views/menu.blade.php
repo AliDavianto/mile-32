@@ -64,6 +64,7 @@
     <!-- Include JSON Data in Blade Template -->
     <script>
         const menus = @json($menus);
+        const meja = @json($meja);
     </script>
 
     <!-- External JavaScript -->
