@@ -47,12 +47,16 @@ body {
 
 /* Form Container */
 .form-container {
-    width: 1230px; /* Width of the form */
+    width: 100%; /* Width of the form */
     background-color: #FFFFFF; /* Background color of form */
     padding: 20px; /* Padding inside form */
     border-radius: 0; /* Sudut tajam 90 derajat */
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for form */
+}
+
+label{
+    padding-left: 50px;
 }
 
 .form-container img {

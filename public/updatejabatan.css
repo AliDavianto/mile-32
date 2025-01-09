@@ -47,13 +47,16 @@ body {
 
 /* Form Container */
 .form-container {
-    width: 1230px; /* Width of the form */
-    background-color: #FFFFFF; /* Background color of form */
+    width: 100%; /* Width of the form */
+    background-color: #ffffff; /* Background color of form */
     padding: 20px; /* Padding inside form */
+    border-right: 50px ;
     border-radius: 0; /* Sudut tajam 90 derajat */
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for form */
 }
+
+
 
 .form-container img {
     width: 100%;
@@ -80,6 +83,8 @@ body {
     margin-bottom: 20px;
 }
 
+
+
 /* Form Styles */
 /* Mengatur posisi label dan input */
 .form-container label {
@@ -89,7 +94,7 @@ body {
     color: #333;
     text-align: left;
     margin-bottom: 5px;
-    margin-left: 490px; /* Menghapus margin kiri */
+    margin-left: 550px; /* Menghapus margin kiri */
 }
 
 /* Mengatur posisi input fields */
@@ -170,4 +175,48 @@ body {
 
 .delete-button:hover {
     background-color: #e60000; /* Warna lebih gelap saat hover */
+}
+
+/* Styling untuk <textarea> agar mirip <input type="text"> */
+textarea {
+    width: 100%; /* Sesuaikan dengan lebar kontainer */
+    max-width: 242px; /* Batas lebar maksimal */
+    height: 40px; /* Tinggi menyerupai input */
+    padding: 5px 10px; /* Jarak dalam */
+    border: 1px solid #ddd; /* Warna garis pembatas */
+    border-radius: 5px; /* Membulatkan sudut */
+    font-size: 0.9em; /* Ukuran font */
+    font-family: 'Poppins', sans-serif; /* Gunakan font yang konsisten */
+    display: block; /* Buat elemen blok */
+    margin: 0 auto 15px auto; /* Jarak antar elemen */
+    box-sizing: border-box; /* Sertakan padding dalam dimensi */
+    resize: none; /* Nonaktifkan ukuran ulang */
+}
+
+/* Hover dan Fokus */
+textarea:hover {
+    border-color: #bbb; /* Warna border saat hover */
+}
+
+textarea:focus {
+    outline: none; /* Hilangkan outline */
+    border-color: #FFD900; /* Warna border saat fokus */
+    box-shadow: 0 0 4px rgba(255, 217, 0, 0.8); /* Tambahkan efek shadow */
+}
+
+/* Styling untuk label */
+label {
+    display: block;
+    font-size: 15px; /* Ukuran font */
+    color: #333; /* Warna teks */
+    text-align: left;
+    margin-bottom: 5px; /* Jarak ke bawah */
+}
+
+/* Styling untuk pesan error */
+.error-message {
+    color: #ff4d4d; /* Warna merah untuk error */
+    font-size: 0.85em; /* Ukuran font lebih kecil */
+    margin-top: 5px; /* Jarak ke atas */
+    display: block;
 }

@@ -38,7 +38,7 @@
 
     <div class="main-content">
         <div class="header">
-            <h3>Data Menu</h3>
+            <h3>Data status</h3>
             <div class="header-actions">
                 <!-- Menambahkan ikon kaca pembesar di sini -->
                 <i class="fas fa-search search-icon"></i>

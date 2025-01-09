@@ -47,7 +47,7 @@ body {
 
 /* Form Container */
 .form-container {
-    width: 1230px; /* Width of the form */
+    width: 100%; /* Width of the form */
     background-color: #FFFFFF; /* Background color of form */
     padding: 20px; /* Padding inside form */
     border-radius: 0; /* Sudut tajam 90 derajat */
@@ -89,7 +89,7 @@ body {
     color: #333;
     text-align: left;
     margin-bottom: 5px;
-    margin-left: 490px; /* Menghapus margin kiri */
+    margin-left: 550px; /* Menghapus margin kiri */
 }
 
 /* Mengatur posisi input fields */
