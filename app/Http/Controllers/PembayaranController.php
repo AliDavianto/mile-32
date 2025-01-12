@@ -219,17 +219,19 @@ class PembayaranController extends Controller
             Log::error('Exception while processing webhook', ['message' => $e->getMessage()]);
             return response()->json(['error' => 'Unexpected error occurred'], 500);
         }
-         // Log the incoming request
+        // Log the incoming request
         //  Log::info('Webhook received:', $request->all());
 
         //  // Process the webhook here (e.g., update payment status)
- 
+
         //  return response()->json(['message' => 'Webhook processed successfully']);
     }
 
     // Helper function to update payment status
+    // Helper function to update payment status
     private function updatePaymentStatus($payment, $status)
     {
+        // Update payment status based on the transaction status
         switch ($status) {
             case 'capture':
             case 'settlement':
@@ -245,12 +247,25 @@ class PembayaranController extends Controller
                 break;
         }
 
+        // Update the payment status
         $payment->save();
         Log::info('Payment updated:', [
             'order_id' => $payment->id_pesanan,
             'status' => $payment->status_pembayaran
         ]);
+
+        // If payment status is success (3), update the order's status to 2
+        if ($payment->status_pembayaran === Pembayaran::STATUS_SUCCESS) {
+            $order = $payment->pesanan;
+            $order->status_pesanan = 2;  // Update status_pesanan to 2
+            $order->save();
+            Log::info('Order status updated:', [
+                'order_id' => $order->id_pesanan,
+                'status_pesanan' => $order->status_pesanan
+            ]);
+        }
     }
+
 
 
     public function update(Request $request, $id)
