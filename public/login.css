@@ -1,6 +1,6 @@
 /* Global Styles */
 body {
-    background-color: #F8F8F8; /* Background color */
+    background-color: #ffffff; /* Background color */
     font-family: 'Poppins', sans-serif; /* Font family */
     display: flex;
     flex-direction: column;
@@ -52,7 +52,6 @@ body {
     padding: 20px; /* Padding inside form */
     border-radius: 0; /* Sudut tajam 90 derajat */
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for form */
 }
 
 .form-container img {

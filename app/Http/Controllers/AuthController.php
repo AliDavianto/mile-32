@@ -9,45 +9,38 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    // Method for login
     public function login(Request $request)
     {
-        // Validate input
+        // Validate the incoming data
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required|string|min:8',
         ]);
 
-        // Check credentials
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->back()->withErrors([
-                'message' => 'Email atau password salah.'
-            ]);
+        // Attempt to authenticate the user
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            // If authentication is successful, check the id_jabatan
+            $jabatan = $user->jabatan;
+
+            // Determine the role and redirect accordingly
+            switch ($jabatan->id_jabatan) {
+                case 1: // Kasir
+                    return redirect()->route('getDashboardkasir'); // Assuming you have this route
+                case 2: // Manager
+                    return redirect()->route('adminlaporan'); // Assuming you have this route
+                case 3: // Staff
+                    return redirect()->route('getDashboardstaff'); // Assuming you have this route
+                default:
+                    return redirect()->route('login')->with('error', 'Invalid role.');
+            }
         }
 
-        // Get the authenticated user
-        $user = Auth::user();
-
-        // Create a token with a specific name based on the role
-        $tokenName = 'auth_token_' . $user->jabatan;
-        $token = $user->createToken($tokenName)->plainTextToken;
-
-        // Store the token in the response or session (optional)
-        $request->session()->put('auth_token_' . $user->jabatan, $token);
-
-        // Redirect based on role, passing the token
-        switch ($user->jabatan) {
-            case 'kasir':
-                return redirect('/dashboard-kasir');
-            case 'staff':
-                return redirect('/dashboard-staff');
-            case 'manager':
-            case 'admin':
-                return redirect('/laporan');
-            default:
-                Auth::logout();
-                return redirect('/login')->withErrors(['message' => 'Unauthorized role.']);
-        }
+        // If authentication fails, redirect back with an error message
+        return redirect()->route('login')->withErrors([
+            'email' => 'The provided credentials are incorrect.',
+        ]);
     }
 
     // Method for logout

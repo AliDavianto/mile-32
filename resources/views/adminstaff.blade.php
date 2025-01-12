@@ -24,8 +24,8 @@
         <li class="{{ request()->is('adminkategori') ? 'active' : '' }}">
             <a href="{{ url('/adminkategori') }}"><i class="icon">📋</i> Kategori</a>
         </li>
-        <li class="{{ request()->is('adminstaff') ? 'active' : '' }}">
-            <a href="{{ url('/adminstaff') }}"><i class="icon">📋</i> staff</a>
+        <li class="{{ request()->is('adminjabatan') ? 'active' : '' }}">
+            <a href="{{ url('/adminjabatan') }}"><i class="icon">📋</i> Jabatan</a>
         </li>
         <li class="{{ request()->is('adminstatus') ? 'active' : '' }}">
             <a href="{{ url('/adminstatus') }}"><i class="icon">📋</i> Status</a>

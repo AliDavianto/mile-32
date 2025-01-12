@@ -17,8 +17,7 @@ use App\Http\Controllers\StaffController;
 Route::get('/menu', [MenuController::class, 'getMenu']);
 Route::get('/cart', [MenuController::class, 'getMenuCart']);
 Route::post('/checkout', [PesananController::class, 'createPesanan'])->name('checkout');
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::view('/login', 'login')->name('login');Route::post('/login', [AuthController::class, 'login']);
 Route::get('/sukses', function () { return view('sukses'); });
 Route::get('/gagal', function () { return view('gagal'); });
 Route::post('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');
@@ -74,7 +73,7 @@ Route::delete('/menu/delete/{id}', [MenuController::class, 'destroy'])->name('de
 
 
 // Admin lapkeu
-Route::get('/adminlaporan', [LaporanController::class, 'index'])->name('adminkategori'); // Correct route definition
+Route::get('/adminlaporan', [LaporanController::class, 'index'])->name('adminlaporan'); // Correct route definition
 
 // Resource Routes
 Route::resource('menus', MenuController::class);

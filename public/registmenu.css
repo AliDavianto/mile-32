@@ -10,14 +10,14 @@ body {
 }
 
 .navbar {
-    background-color: #ffd900;
+    background-color: #FFD900; /* Warna latar belakang navbar */
+    width: 100%; /* Lebar navbar */
+    height: 80px; /* Tinggi navbar */
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    width: 100%;
-    position: relative; /* Ensure navbar stays at top */
-    z-index: 1; /* Ensure navbar is on top of other content */
+    padding: 15px; /* Jarak dalam */
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan halus */
 }
 
 .logo-container {
