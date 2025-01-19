@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/midtrans',  // Add this line to disable CSRF protection for Midtrans webhook
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

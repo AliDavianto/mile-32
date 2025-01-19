@@ -1,24 +1,22 @@
 // Get data from localStorage
 let orderState = JSON.parse(localStorage.getItem('pesanan')) || [];
-let nomorMeja = JSON.parse(localStorage.getItem('nomor_meja'));
-let totalHarga = JSON.parse(localStorage.getItem('total_harga'));
-// Function to render cart items
+let nomorMeja = localStorage.getItem('nomor_meja') || 'Unknown';
+let totalHarga = JSON.parse(localStorage.getItem('total_harga')) || 0;
+
+// Render cart items
 function renderCartItems() {
     const cartContainer = document.getElementById('cart-items');
-    const totalPriceDisplay = document.getElementById('total-price');
+    const totalPriceDisplay = document.getElementById('total-amount');
+    cartContainer.innerHTML = ''; // Clear previous items
 
-    // Clear previous cart items
-    cartContainer.innerHTML = '';
-
-    let totalHarga = 0;
-
-    // Check if orderState is empty
     if (orderState.length === 0) {
         cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+        totalPriceDisplay.textContent = 'Rp0';
         return;
     }
 
-    // Filter menus to find matching cart items
+    let totalHarga = 0;
+
     orderState.forEach(order => {
         const menuItem = menus.find(menu => menu.id_menu === order.id_menu);
         if (menuItem) {
@@ -27,10 +25,9 @@ function renderCartItems() {
 
             const cartItem = document.createElement('div');
             cartItem.classList.add('menu-box');
-
             cartItem.innerHTML = `
                 <div class="menu-image">
-                    <img src="${menuItem.image || 'miegoreng.png'}" alt="${menuItem.nama_produk}">
+                    <img src="${menuItem.gambar}" alt="${menuItem.nama_produk}">
                 </div>
                 <div class="menu-description">
                     <p class="title">${menuItem.nama_produk} (x${order.kuantitas})</p>
@@ -44,32 +41,22 @@ function renderCartItems() {
         }
     });
 
-    totalPriceDisplay.innerHTML = `<h3>Total Price: Rp ${totalHarga.toLocaleString('id-ID')}</h3>`;
+    totalPriceDisplay.textContent = `Rp ${totalHarga.toLocaleString('id-ID')}`;
 }
 
-// Call the function to render cart items
-renderCartItems();
-
-// Clear Local Storage Button functionality
-document.getElementById('clear-storage-btn').addEventListener('click', () => {
-    localStorage.removeItem('pesanan');
-    orderState = [];
-    renderCartItems();
-});
-
-// Function to handle checkout
+// Handle checkout
 async function handleCheckout() {
-    let orderState = JSON.parse(localStorage.getItem('pesanan')) || [];
-
     if (orderState.length === 0) {
         alert('Your cart is empty. Please add items before checking out.');
         return;
     }
-
+    const paymentMethod = document.getElementById('payment-method').value;
+    // Refresh data from localStorage in case it was modified elsewhere
     const payload = {
-        nomor_meja : nomorMeja,
-        pesanan: orderState,
-        total_harga : totalHarga
+        nomor_meja: localStorage.getItem('nomor_meja') || 'Unknown',
+        pesanan: JSON.parse(localStorage.getItem('pesanan')) || [],
+        total_harga: JSON.parse(localStorage.getItem('total_harga')) || 0,
+        metode_pembayaran: paymentMethod, // Add the payment method key
     };
 
     try {
@@ -79,30 +66,32 @@ async function handleCheckout() {
                 'Content-Type': 'application/json',
                 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             },
-            body: JSON.stringify(payload),
+            body: JSON.stringify(payload), // Ensure this includes the correct data
         });
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Failed to process checkout.');
         }
 
         const result = await response.json();
 
-        // if (result.success) {
-        //     alert('Checkout successful!');
-        //     // localStorage.removeItem('pesanan'); // Clear the cart on success
-        //     renderCartItems(); // Re-render cart to reflect changes
-        // } else {
-        //     alert('Checkout failed: ' + result.message);
-        // }
+        if (result.success) {
+            alert(`Pesanan berhasil dibuat!`);
+            // Clear localStorage and state
+            localStorage.removeItem('pesanan');
+            localStorage.removeItem('nomor_meja');
+            localStorage.removeItem('total_harga');
+            orderState = [];
+            renderCartItems();
+        } else {
+            alert(`${result.message}`);
+        }
     } catch (error) {
         console.error('Error during checkout:', error);
         alert('An error occurred during checkout. Please try again.');
     }
 }
 
-// Add event listener to the checkout button only if it exists
-const checkoutButton = document.getElementById('checkout-btn');
-if (checkoutButton) {
-    checkoutButton.addEventListener('click', handleCheckout);
-}
+
+// Render cart items on page load
+renderCartItems();
