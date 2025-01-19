@@ -22,46 +22,46 @@
         </div>
     </header>
 
-   <!-- Cart Items -->
+    <!-- Cart Items -->
     <main class="menu-section">
         <h1>Your Cart</h1>
         <div id="cart-items" class="cart-items-container">
             <!-- Cart items will be populated here by JavaScript -->
         </div>
-            <div class="payment-container">
-                <h2 class="payment-title">Detail Pembayaran</h2>
-                <div class="payment-details">
-                    <div class="payment-row">
-                        <span>Total</span>
-                        <span id="total-amount">Rp0</span>
+        <div class="payment-container">
+            <h2 class="payment-title">Detail Pembayaran</h2>
+            <div class="payment-details">
+                <div class="payment-row">
+                    <span>Total</span>
+                    <span id="total-amount">Rp0</span>
+                </div>
+                <div class="payment-row">
+                    <label for="payment-method">Metode Pembayaran</label>
+                    <div class="select-container">
+                        <select id="payment-method" class="styled-dropdown">
+                            <option selected disabled value=""> Pilih metode </option>
+                            <option value="qris">QRIS</option>
+                            <option value="cash">Cash</option>
+                        </select>
                     </div>
-                    <div class="payment-row">
-                        <label for="payment-method">Metode Pembayaran</label>
-                        <div class="select-container">
-                            <select id="payment-method" class="styled-dropdown">
-                                <option selected disabled value=""> Pilih metode </option>
-                                <option value="qris">QRIS</option>
-                                <option value="cash">Cash</option>
-                            </select>
-                        </div>
-                    </div>
-                    <form id="checkout-form" onsubmit="event.preventDefault(); handleCheckout();">
-                        <input type="hidden" id="pesanan-input" name="pesanan">
-                        <button type="submit" class="checkout-button">CHECKOUT</button>
-                    </form>
-                
-                
-                <form action="{{ route('pembayaran') }}" method="POST">
-                @csrf
-
+                </div>
+                <form id="checkout-form" onsubmit="event.preventDefault(); handleCheckout();">
+                    <input type="hidden" id="pesanan-input" name="pesanan">
+                    <button type="submit" class="checkout-button">CHECKOUT</button>
+                </form>
                 <div class="bayar-section">
                     <button id="bayar-btn" class="checkout-button">Bayar</button>
                 </div>
 
-                
-            </form>
+                <form action="{{ route('pembayaran') }}" method="POST">
+                    @csrf
+
+
+
+
+                </form>
             </div>
-</main>
+    </main>
 
 
     <!-- Clear Local Storage Button -->
