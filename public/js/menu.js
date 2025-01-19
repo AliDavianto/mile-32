@@ -1,107 +1,158 @@
-let orderState = JSON.parse(localStorage.getItem('pesanan')) || [];
+document.addEventListener('DOMContentLoaded', () => {
+    const kategoriContainers = {
+        1: document.querySelector('#kategori-1 .menu-container'), // Makanan
+        2: document.querySelector('#kategori-2 .menu-container') // Minuman
+        // 4: document.querySelector("#kategori-4 .menu-container"), // Snack
+    }
+    // Function to render menus
+    function renderMenus (filteredMenus) {
+        // Clear all categories
+        Object.values(kategoriContainers).forEach(
+            container => (container.innerHTML = '')
+        )
 
-// Assuming menus is already defined somewhere in your code
-const quantityControlsList = document.querySelectorAll('.quantity-controls');
-const decreaseBtns = document.querySelectorAll('.decrease-btn');
-const increaseBtns = document.querySelectorAll('.increase-btn');
-const quantityDisplays = document.querySelectorAll('.quantity');
-const clearStorageBtn = document.getElementById('clear-storage-btn');
-const nomorMeja = 17; // Replace with the actual table number if dynamic
+        // Render menus based on the filteredMenus array
+        filteredMenus.forEach(menu => {
+            const menuBox = document.createElement('div')
+            menuBox.classList.add('menu-box')
 
-// Function to calculate total price
-function calculateTotalPrice(menu) {
-    return menu.reduce((total, item) => total + (item.harga * item.quantity), 0);
-}
+            menuBox.innerHTML = `
+                <div class="menu-image">
+                    <img src="${menu.gambar}" alt="${menu.nama_produk}">
+                </div>
+                <div class="menu-description">
+                    <p class="title">${menu.nama_produk}</p>
+                    <p class="description">${menu.deskripsi}</p>
+                    <div class="price-controls">
+                        <p class="price">Rp ${menu.harga.toLocaleString(
+                            'id-ID'
+                        )}</p>
+                        <div class="quantity-controls" style="display: flex;">
+                            <button class="decrease-btn" disabled>−</button>
+                            <span class="quantity">0</span>
+                            <button class="increase-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+            `
+
+            // Append to the corresponding category container
+            if (kategoriContainers[menu.id_kategori]) {
+                kategoriContainers[menu.id_kategori].appendChild(menuBox)
+            }
+        })
+    }
+
+    // Initial render of all menus
+    renderMenus(menus)
+
+    // Search functionality
+    const searchInput = document.getElementById('search-input')
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase()
+
+        // Filter menus based on search query
+        const filteredMenus = menus.filter(menu =>
+            menu.nama_produk.toLowerCase().includes(query)
+        )
+
+        // Re-render menus with filtered results
+        renderMenus(filteredMenus)
+    })
+
+    // Reinitialize quantity controls after rendering menus
+    initializeQuantities()
+})
+
+let orderState = JSON.parse(localStorage.getItem('pesanan')) || []
+const nomorMeja = meja
 
 // Save order state to local storage
-function saveToLocalStorage() {
-    // Filter out items with quantity 0 before saving
-    const filteredOrderState = orderState.filter(item => item.quantity > 0);
-
-    // Map the items to a new array with the desired key
+function saveToLocalStorage () {
+    const filteredOrderState = orderState.filter(item => item.quantity > 0)
     const pesanan = filteredOrderState.map(item => ({
         id_menu: item.id_menu,
         kuantitas: item.quantity,
         harga: item.harga
-    }));
+    }))
+    const totalHarga = calculateTotalPrice(filteredOrderState)
 
-    const totalHarga = calculateTotalPrice(filteredOrderState);
-    localStorage.setItem('nomor_meja', nomorMeja);
-    localStorage.setItem('pesanan', JSON.stringify(pesanan));
-    localStorage.setItem('total_harga', totalHarga);
+    localStorage.setItem('nomor_meja', nomorMeja)
+    localStorage.setItem('pesanan', JSON.stringify(pesanan))
+    localStorage.setItem('total_harga', totalHarga)
 }
 
-// Update displayed quantity for a given index
-function updateQuantityDisplay(index, quantity) {
-    quantityDisplays[index].textContent = quantity;
-    decreaseBtns[index].disabled = quantity <= 0; // Disable decrease button if quantity is 0
+// Calculate total price
+function calculateTotalPrice (menu) {
+    return menu.reduce((total, item) => total + item.harga * item.quantity, 0)
 }
 
-// Initialize quantity displays from local storage
-function initializeQuantities() {
+// Update displayed quantity
+function updateQuantityDisplay (index, quantity) {
+    const quantityDisplays = document.querySelectorAll('.quantity')
+    const decreaseBtns = document.querySelectorAll('.decrease-btn')
+    quantityDisplays[index].textContent = quantity
+    decreaseBtns[index].disabled = quantity <= 0
+}
+
+// Initialize quantities
+function initializeQuantities () {
     menus.forEach((menu, index) => {
-        const existingOrderIndex = orderState.findIndex(order => order.id_menu === menu.id_menu);
-        if (existingOrderIndex >= 0) {
-            const quantity = orderState[existingOrderIndex].quantity;
-            updateQuantityDisplay(index, quantity);
-        } else {
-            updateQuantityDisplay(index, 0); // Set to 0 if not in orderState
-        }
-    });
+        const existingOrder = orderState.find(
+            order => order.id_menu === menu.id_menu
+        )
+        const quantity = existingOrder ? existingOrder.kuantitas : 0
+        updateQuantityDisplay(index, quantity)
+    })
 }
 
-// Decrease quantity or remove item
-decreaseBtns.forEach((decreaseBtn, index) => {
-    decreaseBtn.addEventListener('click', () => {
-        const existingOrderIndex = orderState.findIndex(order => order.id_menu === menus[index].id_menu);
-        if (existingOrderIndex >= 0 && orderState[existingOrderIndex].quantity > 0) {
-            orderState[existingOrderIndex].quantity--;
-            updateQuantityDisplay(index, orderState[existingOrderIndex].quantity);
-
-            // If quantity becomes 0, remove the item from the orderState
-            if (orderState[existingOrderIndex].quantity === 0) {
-                orderState.splice(existingOrderIndex, 1); // Remove the item from orderState
-            }
-        }
-        saveToLocalStorage();
-    });
-});
-
-// Increase quantity
-increaseBtns.forEach((increaseBtn, index) => {
-    increaseBtn.addEventListener('click', () => {
-        const existingOrderIndex = orderState.findIndex(order => order.id_menu === menus[index].id_menu);
+// Add event listeners for quantity buttons
+document.addEventListener('click', event => {
+    if (event.target.classList.contains('increase-btn')) {
+        const index = Array.from(
+            document.querySelectorAll('.increase-btn')
+        ).indexOf(event.target)
+        const existingOrderIndex = orderState.findIndex(
+            order => order.id_menu === menus[index].id_menu
+        )
         if (existingOrderIndex >= 0) {
-            orderState[existingOrderIndex].quantity++;
-            updateQuantityDisplay(index, orderState[existingOrderIndex].quantity);
+            orderState[existingOrderIndex].quantity++
         } else {
-            // If the menu item was not previously in the orderState, add it
             orderState.push({
                 id_menu: menus[index].id_menu,
                 quantity: 1,
-                harga: menus[index].harga,
-            });
-            updateQuantityDisplay(index, 1);
+                harga: menus[index].harga
+            })
         }
-        saveToLocalStorage();
-    });
-});
+        updateQuantityDisplay(
+            index,
+            orderState.find(order => order.id_menu === menus[index].id_menu)
+                .quantity
+        )
+        saveToLocalStorage()
+    }
 
-// Clear Local Storage button
-clearStorageBtn.addEventListener('click', () => {
-    localStorage.removeItem('nomor_meja');
-    localStorage.removeItem('pesanan');
-    localStorage.removeItem('total_harga');
-    orderState = [];
-    alert('Local Storage cleared!');
-
-    // Reset all quantities to 0
-    quantityDisplays.forEach((display, index) => {
-        display.textContent = '0'; // Reset quantity display to 0
-        quantityControlsList[index].style.display = 'flex'; // Show quantity controls
-        decreaseBtns[index].disabled = true; // Disable decrease button
-    });
-});
-
-// Initialize quantities on page load
-initializeQuantities();
+    if (event.target.classList.contains('decrease-btn')) {
+        const index = Array.from(
+            document.querySelectorAll('.decrease-btn')
+        ).indexOf(event.target)
+        const existingOrderIndex = orderState.findIndex(
+            order => order.id_menu === menus[index].id_menu
+        )
+        if (
+            existingOrderIndex >= 0 &&
+            orderState[existingOrderIndex].quantity > 0
+        ) {
+            orderState[existingOrderIndex].quantity--
+            if (orderState[existingOrderIndex].quantity === 0) {
+                orderState.splice(existingOrderIndex, 1)
+            }
+            updateQuantityDisplay(
+                index,
+                orderState.find(order => order.id_menu === menus[index].id_menu)
+                    ?.quantity || 0
+            )
+            saveToLocalStorage()
+        }
+    }
+})

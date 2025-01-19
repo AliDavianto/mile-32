@@ -1,0 +1,76 @@
+/* CSS untuk Navbar */
+.navbar {
+    background-color: #FFD900; /* Warna kuning */
+    padding: 15px; /* Jarak dalam yang lebih besar */
+    display: flex; /* Menggunakan flexbox untuk tata letak */
+    align-items: center; /* Perataan vertikal */
+    font-family: 'Poppins', sans-serif; /* Font */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+}
+.navbar .logo-container {
+    display: flex; /* Menggunakan flexbox untuk logo dan teks */
+    align-items: center; /* Perataan vertikal logo dan teks */
+}
+.navbar .logo-image {
+    width: 50px; /* Ukuran gambar logo */
+    height: auto; /* Tinggi otomatis */
+    margin-right: 15px; /* Jarak antara gambar dan teks */
+}
+.navbar .logo-text h1 {
+    font-size: 1.8em; /* Ukuran font untuk nama cafe */
+    color: #333; /* Warna teks nama cafe */
+    margin: 0; /* Menghilangkan margin default */
+}
+.navbar .logo-text p {
+    font-size: 0.9em; /* Ukuran font untuk teks deskripsi */
+    color: #555; /* Warna teks deskripsi */
+    margin: 0; /* Menghilangkan margin default */
+}
+
+/* CSS untuk Gambar dan Teks */
+.image-container {
+    text-align: center; /* Mengatur teks menjadi rata tengah */
+    background-color: #ffffff; /* Latar belakang putih */
+    padding: 20px; /* Jarak dalam untuk gambar dan teks */
+}
+.gagal-image {
+    width: 287px; /* Lebar gambar */
+    height:287px; /* Tinggi gambar */
+}
+.payment-end {
+    font-size: 24px; 
+    color: #ff0000 !important; /* Menambahkan !important */
+    margin: 10px 0;
+}
+
+.total-price {
+    font-size: 15px; /* Ukuran font untuk total harga */
+    color: #007408; /* Warna hijau */
+    margin: 5px 0; /* Jarak vertikal yang lebih kecil untuk mendekatkan dengan status pesanan */
+}
+.text-container {
+    margin-top: 20px; /* Jarak atas untuk teks di bawah gambar */
+}
+.enjoy-message {
+    margin: 10px 0; /* Jarak vertikal untuk pesan menikmati */
+    font-family: 'Poppins', sans-serif; /* Font */
+}
+
+/* CSS untuk Back To Home */
+.back-to-home {
+    display: inline-block; /* Membuat elemen dapat menerima padding dan margin */
+    font-size: 18px; /* Ukuran font 18px */
+    color: #ffffff; /* Warna teks putih */
+    background-color: #FFD900; /* Latar belakang berwarna #FFD900 */
+    border: 2px solid #FFD900; /* Border dengan warna #FFD900 */
+    border-radius: 10px; /* Radius border 10px */
+    padding: 10px 20px; /* Padding untuk memberikan jarak dalam */
+    text-decoration: none; /* Menghilangkan garis bawah pada teks */
+    margin-top: 20px; /* Margin atas untuk memberi jarak dari pesan sebelumnya */
+    transition: background-color 0.3s, color 0.3s; /* Transisi untuk efek hover */
+}
+
+.back-to-home:hover {
+    background-color: #000000; /* Ubah latar belakang menjadi hitam saat hover */
+    color: #FFD900; /* Ubah warna teks menjadi kuning saat hover */
+}

@@ -1,0 +1,172 @@
+/* Global Styles */
+body {
+    background-color: #FFFFFF; /* Background color */
+    font-family: 'Poppins', sans-serif; /* Font family */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* CSS untuk Navbar */
+.navbar {
+    background-color: #FFD900; /* Warna latar belakang navbar */
+    width: 100%; /* Lebar navbar */
+    height: 80px; /* Tinggi navbar */
+    display: flex;
+    align-items: center;
+    padding: 15px; /* Jarak dalam */
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+}
+
+.logo-container {
+    display: flex; /* Membuat tata letak horizontal */
+    align-items: center; /* Menyelaraskan elemen vertikal */
+    gap: 15px; /* Jarak antara logo dan teks */
+}
+
+.logo-image {
+    width: 78px; /* Lebar logo */
+    height: 70px; /* Tinggi logo */
+}
+
+.logo-text h1 {
+    font-size: 1.8em; /* Ukuran font untuk nama cafe */
+    color: #333; /* Warna teks nama cafe */
+    margin: 0; /* Menghilangkan margin */
+}
+
+.logo-text p {
+    font-size: 0.9em; /* Ukuran font untuk teks deskripsi */
+    color: #555;
+    margin: 0; /* Menghilangkan margin */
+    margin-top: 5px; /* Jarak antara nama dan deskripsi */
+}
+
+/* Form Container */
+.form-container {
+    width: 1230px; /* Width of the form */
+    background-color: #FFFFFF; /* Background color of form */
+    padding: 20px; /* Padding inside form */
+    border-radius: 0; /* Sudut tajam 90 derajat */
+    text-align: center;
+}
+
+.form-container img {
+    width: 100%;
+    height: auto;
+    max-width: 250px; /* Maximum width for the image */
+    margin: 0 auto 20px auto; /* Centering and spacing below image */
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.form-container h2 {
+    font-size: 1.2em; /* Font size for form heading */
+    font-weight: bold; /* Bold font for heading */
+    color: #333;
+    margin: 20px 0 10px; /* Spacing around heading */
+    margin-bottom: 20px;
+}
+
+/* Welcome Message */
+.form-container .welcome-message {
+    font-weight: bold; /* Make text bold */
+    font-size: 15px; /* Set font size to 15px */
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form Styles */
+/* Mengatur posisi label dan input */
+.form-container label {
+    display: block;
+    font-weight: normal;
+    font-size: 15px;
+    color: #333;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-left: 490px; /* Menghapus margin kiri */
+}
+
+/* Mengatur posisi input fields */
+.form-container input[type="text"],
+.form-container input[type="password"] {
+    width: 100%; /* Menjadikan input selebar form */
+    max-width: 242px; /* Batas lebar maksimal untuk input */
+    height: 26px; /* Menambah tinggi input */
+    padding: 5px 10px;
+    margin: 0 auto 15px auto; /* Menyatukan input di tengah */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+    display: block;
+}
+
+/* Mengatur posisi dropdown agar sama dengan input */
+.form-container select {
+    width: 100%; /* Menjadikan dropdown selebar form */
+    max-width: 242px; /* Batas lebar maksimal untuk dropdown */
+    height: 26px; /* Tinggi dropdown sesuai dengan input */
+    padding: 5px 10px;
+    margin: 0 auto 15px auto; /* Menyatukan dropdown di tengah */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+    display: block;
+}
+
+/* Mengatur posisi button Update */
+.form-container .update-btn {
+    width: 100%; /* Lebar penuh untuk tombol Update */
+    max-width: 242px; /* Batas lebar maksimal sama dengan input */
+    height: 26px;
+    background-color: #FFD900; /* Warna latar tombol Update */
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    display: block;
+    margin: 0 auto; /* Menyatukan tombol di tengah */
+    margin-top: 15px; /* Jarak dari elemen sebelumnya */
+}
+
+.form-container .update-btn:hover {
+    background-color: #e6c200; /* Warna lebih gelap saat hover */
+}
+
+/* Styling untuk tombol Edit dan Hapus */
+.edit-button,
+.delete-button {
+    padding: 5px 15px; /* Ukuran padding untuk tombol */
+    font-size: 0.9em; /* Ukuran font */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Warna dan gaya tombol Edit */
+.edit-button {
+    background-color: #FFD900; /* Warna latar belakang kuning */
+    color: #333; /* Warna teks */
+    margin-right: 5px; /* Jarak antara tombol Edit dan Hapus */
+}
+
+.edit-button:hover {
+    background-color: #e6c200; /* Warna lebih gelap saat hover */
+}
+
+/* Warna dan gaya tombol Hapus */
+.delete-button {
+    background-color: #ff4d4d; /* Warna latar belakang merah */
+    color: #fff; /* Warna teks putih */
+}
+
+.delete-button:hover {
+    background-color: #e60000; /* Warna lebih gelap saat hover */
+}

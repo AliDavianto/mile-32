@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Menu Mile Cafe 32</title>
-    <link rel="stylesheet" href="{{ asset('styles.css') }}">
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 </head>
 
@@ -16,38 +16,34 @@
         <div class="logo-container">
             <img src="logo mile.png" alt="Logo Mile Cafe" class="logo-image">
             <div class="logo-text">
-                <h1>Miles 32</h1>
+                <h1>Mile 32</h1>
                 <p>Temukan harmoni rasa dan cerita di Miles 32, tempat membawa pengalaman baru!</p>
             </div>
         </div>
     </header>
 
+    <!-- Search Bar -->
+
     <!-- Menu Items -->
     <main class="menu-section">
-        @foreach ($menus as $menu)
-            <div class="menu-box">
-                <div class="menu-image">
-                    <img src="miegoreng.png" alt="gambar">
-                </div>
-                <div class="menu-description">
-                    <p class="title">{{ $menu['nama_produk'] }}</p>
-                    <p class="description">{{ $menu['deskripsi'] }}</p>
-                    <div class="price-controls">
-                        <p class="price">Rp {{ number_format($menu['harga'], 0, ',', '.') }}</p>
-                        <!-- Set quantity controls to be always displayed with a default value of 0 -->
-                        <div class="quantity-controls" style="display: flex;">
-                            <button class="decrease-btn" disabled>−</button>
-                            <span class="quantity">0</span>
-                            <button class="increase-btn">+</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
+    <section class="search-bar">
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Cari menu..." />
+        </div>
+    </section>
+        <div id="kategori-1" class="kategori-section">
+            <h2>Makanan</h2>
+            <div class="menu-container"></div>
+        </div>
+        <div id="kategori-2" class="kategori-section">
+            <h2>Minuman</h2>
+            <div class="menu-container"></div>
+        </div>
+        <div id="kategori-4" class="kategori-section">
+            <h2>Snack</h2>
+            <div class="menu-container"></div>
+        </div>
     </main>
-
-    <!-- Clear Local Storage Button -->
-    <button id="clear-storage-btn">Clear Local Storage</button>
 
     <!-- Bottom Navbar -->
     <footer class="bottom-navbar">
@@ -68,10 +64,11 @@
     <!-- Include JSON Data in Blade Template -->
     <script>
         const menus = @json($menus);
+        const meja = @json($meja);
     </script>
 
     <!-- External JavaScript -->
-    <script src="{{ asset('js/menu.js') }}"></script>
+    <script src="{{ asset('js/menu.js') }}?v={{ time() }}"></script>
 </body>
 
 </html>

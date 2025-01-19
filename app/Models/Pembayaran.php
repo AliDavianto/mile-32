@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Pembayaran extends Model
 {
     use HasFactory;
-    protected $table = 'pembayarans'; 
-    protected $primaryKey = 'id_transaksi'; 
+    protected $table = 'pembayaran'; 
+    protected $primaryKey = 'id_pembayaran'; 
+    protected $casts = [
+        'id_pembayaran' => 'string',
+    ];
     protected $fillable = [
+        'id_pembayaran',
         'id_pesanan',
         'metode_pembayaran',
         'total_pembayaran',
@@ -18,13 +22,18 @@ class Pembayaran extends Model
         'waktu_transaksi'
     ];
 
+
+    const STATUS_PENDING = 1;
+    const STATUS_SUCCESS = 3;
+    const STATUS_FAILED = 4;
+    
     public function pesanan()
     {
         return $this->belongsTo(Pesanan::class, 'id_pesanan');
     }
 
-    public function laporan()
+    public function status()
     {
-        return $this->hasOne(Laporan::class, 'id_transaksi');
+        return $this->belongsTo(Status::class, 'status_id');
     }
 }
