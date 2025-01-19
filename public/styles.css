@@ -353,3 +353,9 @@ body {
 .search-input:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.bayar-section {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center horizontally */
+    margin-top: 15px; /* Add some spacing above if necessary */
+}

@@ -33,14 +33,15 @@
             <div class="payment-details">
                 <div class="payment-row">
                     <span>Total</span>
-                    <span id="total-amount">Rp0</span> <!-- Use an ID for dynamic updates -->
+                    <span id="total-amount">Rp0</span>
                 </div>
                 <div class="payment-row">
                     <label for="payment-method">Metode Pembayaran</label>
                     <div class="select-container">
                         <select id="payment-method" class="styled-dropdown">
-                            <option value="1">QRIS</option>
-                            <option value="2">Cash</option>
+                            <option selected disabled value=""> Pilih metode </option>
+                            <option value="qris">QRIS</option>
+                            <option value="cash">Cash</option>
                         </select>
                     </div>
                 </div>
@@ -48,16 +49,20 @@
                     <input type="hidden" id="pesanan-input" name="pesanan">
                     <button type="submit" class="checkout-button">CHECKOUT</button>
                 </form>
-            </div>
-            <form action="{{ route('pembayaran') }}" method="POST">
-                @csrf
-
                 <div class="bayar-section">
                     <button id="bayar-btn" class="checkout-button">Bayar</button>
                 </div>
-            </form>
-        </div>
+
+                <form action="{{ route('pembayaran') }}" method="POST">
+                    @csrf
+
+
+
+
+                </form>
+            </div>
     </main>
+
 
     <!-- Clear Local Storage Button -->
     {{-- <button id="clear-storage-btn">Clear Local Storage</button> --}}
