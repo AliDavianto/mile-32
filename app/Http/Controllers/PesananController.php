@@ -7,6 +7,7 @@ use App\Models\DetailPesanan;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
@@ -155,9 +156,16 @@ class PesananController extends Controller
 
             Log::info('Udah di pass di pembayaran.');
             Log::info('');
+            $meja=$validatedData['nomor_meja'];
+            if ($validatedData['metode_pembayaran'] === 'qris') {
             return response()->json([
-                'message' => 'Pesanan Berhasil dicatat',
-            ], 201);
+                'message' => 'Pesanan Berhasil dicatat silahkan lanjutkan bayar',
+            ], 201);}
+            else {
+                    return response()->json([
+                        'redirect_url' => route('suksescash', ['meja' => $meja]), // Redirect dengan nomor meja
+                    ], 201);}
+            
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -186,7 +194,7 @@ class PesananController extends Controller
     protected function createMetodePembayaran(string $metodePembayaran)
     {
         Log::info('Metode Pembayaran yang diterima dari localstorage:', ['metode_pembayaran' => $metodePembayaran]);
-        if ($metodePembayaran === "1") {
+        if ($metodePembayaran === "qris") {
             return "Digital";
         } else {
             return "Non-Digital";

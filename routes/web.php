@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\DetailPesananController;
@@ -18,7 +19,11 @@ Route::get('/menu', [MenuController::class, 'getMenu']);
 Route::get('/cart', [MenuController::class, 'getMenuCart']);
 Route::post('/checkout', [PesananController::class, 'createPesanan'])->name('checkout');
 Route::view('/login', 'login')->name('login');Route::post('/login', [AuthController::class, 'login']);
-Route::get('/sukses', function () { return view('sukses'); });
+Route::get('/sukses', function () { return view('sukses'); })->name('sukses');
+Route::get('/suksescash', function (Request $request) {
+    $meja = $request->query('meja'); // Ambil nomor meja dari query string
+    return view('suksescash', compact('meja')); // Kirim ke view
+})->name('suksescash');
 Route::get('/gagal', function () { return view('gagal'); });
 Route::post('/pembayaran', [PembayaranController::class, 'pembayaran'])->name('pembayaran');
 Route::post('/webhooks/midtrans', [PembayaranController::class, 'webhook'])->name('webhook');
