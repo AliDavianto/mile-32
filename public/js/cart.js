@@ -7,7 +7,7 @@ let totalHarga = JSON.parse(localStorage.getItem('total_harga')) || 0;
 function renderCartItems() {
     const cartContainer = document.getElementById('cart-items');
     const totalPriceDisplay = document.getElementById('total-amount');
-    cartContainer.innerHTML = ''; // Clear previous items
+    cartContainer.innerHTML = '';
 
     if (orderState.length === 0) {
         cartContainer.innerHTML = '<p>Your cart is empty.</p>';
@@ -44,6 +44,18 @@ function renderCartItems() {
     totalPriceDisplay.textContent = `Rp ${totalHarga.toLocaleString('id-ID')}`;
 }
 
+// Handle payment method change
+function handlePaymentMethodChange() {
+    const paymentMethod = document.getElementById('payment-method').value;
+    const bayarButton = document.getElementById('bayar-btn');
+
+    if (paymentMethod === 'qris') {
+        bayarButton.style.display = 'block';
+    }
+    else {
+        bayarButton.style.display = 'none';}
+}
+
 // Handle checkout
 async function handleCheckout() {
     if (orderState.length === 0) {
@@ -66,7 +78,7 @@ async function handleCheckout() {
                 'Content-Type': 'application/json',
                 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             },
-            body: JSON.stringify(payload), // Ensure this includes the correct data
+            body: JSON.stringify(payload),
         });
 
         if (!response.ok) {
@@ -74,24 +86,29 @@ async function handleCheckout() {
         }
 
         const result = await response.json();
-
-        if (result.success) {
-            alert(`Pesanan berhasil dibuat!`);
-            // Clear localStorage and state
+        if (result.redirect_url) {
+        
+            window.location.href = result.redirect_url; // Redirect ke URL yang diberikan
             localStorage.removeItem('pesanan');
             localStorage.removeItem('nomor_meja');
             localStorage.removeItem('total_harga');
             orderState = [];
             renderCartItems();
         } else {
-            alert(`${result.message}`);
+            alert(result.message); // Tampilkan pesan jika tidak ada redirect
         }
+       
     } catch (error) {
         console.error('Error during checkout:', error);
         alert('An error occurred during checkout. Please try again.');
     }
 }
 
-
 // Render cart items on page load
 renderCartItems();
+
+// Add event listener to payment method dropdown
+document.getElementById('payment-method').addEventListener('change', handlePaymentMethodChange);
+
+// Initialize payment method visibility
+handlePaymentMethodChange();
